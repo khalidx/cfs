@@ -1,0 +1,41 @@
+{
+  "name": "@khalidx/cfs",
+  "version": "0.0.1",
+  "description": "An easy way to manage your cloud like a local filesystem.",
+  "main": "dist/index.js",
+  "bin": "bin/cli.js",
+  "scripts": {
+    "build": "run-s build:*",
+    "build:clean": "rimraf dist/ exec/",
+    "build:typescript": "tsc",
+    "build:native": "pkg . --out-path exec/"
+  },
+  "license": "MIT",
+  "author": "Khalid Zoabi <kzoabi@outlook.com>",
+  "keywords": [
+    "aws",
+    "cloud",
+    "infrastructure",
+    "iac",
+    "deploy"
+  ],
+  "homepage": "https://github.com/khalidx/cfs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khalidx/cfs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/khalidx/cfs/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.24",
+    "npm-run-all": "^4.1.5",
+    "pkg": "^5.6.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "tslib": "^2.3.1"
+  }
+}
