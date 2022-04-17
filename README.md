@@ -8,6 +8,22 @@ An easy way to manage your cloud like a local filesystem.
 cfs
 ```
 
+## supported resources
+
+The following cloud resources are currently supported:
+
+- AWS S3 Buckets
+- AWS ACM Certificates
+- AWS Route53 Hosted Zones
+- AWS Lambda Functions
+- AWS Regions
+- AWS DynamoDB Tables
+- AWS VPCs
+
+## plugins
+
+(coming soon)
+
 ## developers
 
 This section is for developers working on the `cfs` code. For usage instructions, see the sections above.

@@ -7,6 +7,7 @@ import Buckets from './resources/buckets'
 import Tables from './resources/tables'
 import Domains from './resources/domains'
 import Certificates from './resources/certificates'
+import Functions from './resources/functions'
 
 export async function cli (args: string[]) {
   const command = args.shift()
@@ -19,7 +20,8 @@ export async function cli (args: string[]) {
       Buckets.write(),
       Tables.write(),
       Domains.write(),
-      Certificates.write()
+      Certificates.write(),
+      Functions.write()
     ])
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
