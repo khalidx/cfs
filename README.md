@@ -10,7 +10,7 @@ cfs
 
 ## supported resources
 
-The following cloud resources are currently supported:
+The following cloud resources are [currently supported](./src/resources/):
 
 - AWS S3 Buckets
 - AWS ACM Certificates
