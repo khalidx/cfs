@@ -58,6 +58,8 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS SNS Topics
 - AWS VPCs
 
+> Make sure you're logged in to AWS, and have the corresponding credentials file or environment variables set. Otherwise, `cfs` won't be able to query your cloud resources. Here's a quick guide from AWS on [configuring your credentials with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
+
 ## plugins
 
 (coming soon)
