@@ -17,6 +17,7 @@ The following cloud resources are [currently supported](./src/resources/):
 
 - AWS S3 Buckets
 - AWS ACM Certificates
+- AWS CloudFront Distributions
 - AWS Route53 Hosted Zones
 - AWS Lambda Functions
 - AWS SQS Queues
