@@ -19,8 +19,10 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS ACM Certificates
 - AWS Route53 Hosted Zones
 - AWS Lambda Functions
+- AWS SQS Queues
 - AWS Regions
 - AWS DynamoDB Tables
+- AWS SNS Topics
 - AWS VPCs
 
 ## plugins

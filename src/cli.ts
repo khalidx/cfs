@@ -8,6 +8,8 @@ import Tables from './resources/tables'
 import Domains from './resources/domains'
 import Certificates from './resources/certificates'
 import Functions from './resources/functions'
+import Queues from './resources/queues'
+import Topics from './resources/topics'
 
 export async function cli (args: string[]) {
   const command = args.shift()
@@ -21,7 +23,9 @@ export async function cli (args: string[]) {
       Tables.write(),
       Domains.write(),
       Certificates.write(),
-      Functions.write()
+      Functions.write(),
+      Queues.write(),
+      Topics.write()
     ])
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {

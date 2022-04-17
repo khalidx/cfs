@@ -43,6 +43,8 @@
     "@aws-sdk/client-lambda": "^3.72.0",
     "@aws-sdk/client-route-53": "^3.72.0",
     "@aws-sdk/client-s3": "^3.72.0",
+    "@aws-sdk/client-sns": "^3.72.0",
+    "@aws-sdk/client-sqs": "^3.72.0",
     "fs-extra": "^10.1.0",
     "globby": "^11.1.0",
     "tslib": "^2.3.1",
