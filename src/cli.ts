@@ -5,6 +5,8 @@ import Regions from './resources/regions'
 import Vpcs from './resources/vpcs'
 import Buckets from './resources/buckets'
 import Tables from './resources/tables'
+import Domains from './resources/domains'
+import Certificates from './resources/certificates'
 
 export async function cli (args: string[]) {
   const command = args.shift()
@@ -12,9 +14,13 @@ export async function cli (args: string[]) {
     await ensureDir('.cfs/')
     await writeFile('.cfs/.gitignore', '*\n')
     await Regions.write()
-    await Vpcs.write()
-    await Buckets.write()
-    await Tables.write()
+    await Promise.all([
+      Vpcs.write(),
+      Buckets.write(),
+      Tables.write(),
+      Domains.write(),
+      Certificates.write()
+    ])
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
     const paths = await globby([ '.cfs/**/*' ])
