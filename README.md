@@ -1,5 +1,7 @@
 # cfs
 
+<img src="logo.svg" width="350px">
+
 An easy way to manage your cloud like a local filesystem.
 
 ## cli
