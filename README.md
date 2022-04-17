@@ -8,6 +8,7 @@ An easy way to manage your cloud like a local filesystem.
 
 ```sh
 cfs
+cfs ls
 ```
 
 ## supported resources
