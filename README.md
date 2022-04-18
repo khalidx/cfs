@@ -14,6 +14,8 @@ An easy way to discover and manage your cloud like a local filesystem.
 npm install -g @khalidx/cfs
 ```
 
+Also, a native binary is available for [Windows](https://github.com/khalidx/cfs/releases/download/v0.1.0/cfs-win.exe), [Mac](https://github.com/khalidx/cfs/releases/download/v0.1.0/cfs-macos), and [Linux](https://github.com/khalidx/cfs/releases/download/v0.1.0/cfs-linux).
+
 ## cli
 
 ```sh
