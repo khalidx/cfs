@@ -58,6 +58,8 @@ This is the same as deleting the `.cfs/` directory yourself with `rm -rf .cfs/`.
 
 The following cloud resources are [currently supported](./src/resources/):
 
+- AWS CloudWatch Metric Alarms
+- AWS CloudWatch Composite Alarms
 - AWS API Gateway HTTP APIs
 - AWS API Gateway REST APIs
 - AWS S3 Buckets

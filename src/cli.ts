@@ -13,6 +13,7 @@ import Topics from './resources/topics'
 import Distributions from './resources/distributions'
 import Apis from './resources/apis'
 import Stacks from './resources/stacks'
+import Alarms from './resources/alarms'
 
 export async function cli (args: string[]) {
   const command = args.shift()
@@ -31,7 +32,8 @@ export async function cli (args: string[]) {
       Topics.write(),
       Distributions.write(),
       Apis.write(),
-      Stacks.write()
+      Stacks.write(),
+      Alarms.write()
     ])
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
