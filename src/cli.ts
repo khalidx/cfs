@@ -1,3 +1,4 @@
+import { ZodError } from 'zod'
 import { ensureDir, writeFile, remove } from 'fs-extra'
 import globby from 'globby'
 
@@ -57,14 +58,24 @@ export async function cli (args: string[]) {
 
 export class CliUserError extends Error {
   constructor (message: string) {
-    super('Error: ' + message)
+    super(message)
   }
 }
 
 export function start (module: NodeModule) {
   if (require.main === module) {
     cli(process.argv.slice(2)).catch(error => {
-      console.error((error instanceof CliUserError) ? error.message : error)
+      if (error instanceof ZodError) {
+        error.issues.forEach(({ code, path, message, ...rest }) => {
+          console.error('Error:', code, path.join('/'), message, JSON.stringify(rest))
+        })
+        console.error('This is most likely a schema validation issue.')
+        console.error('Please open a Github issue.')
+      } else if (error instanceof CliUserError) {
+        console.error('Error:', error.message)
+      } else {
+        console.error('Error:', error)
+      }
       process.exit(1)
     })
   }
