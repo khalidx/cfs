@@ -63,6 +63,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS API Gateway HTTP APIs
 - AWS API Gateway REST APIs
 - AWS S3 Buckets
+- AWS CloudWatch Synthetics Canaries
 - AWS ACM Certificates
 - AWS CloudFront Distributions
 - AWS Route53 Hosted Zones

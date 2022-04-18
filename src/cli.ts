@@ -14,6 +14,7 @@ import Distributions from './resources/distributions'
 import Apis from './resources/apis'
 import Stacks from './resources/stacks'
 import Alarms from './resources/alarms'
+import Canaries from './resources/canaries'
 
 export async function cli (args: string[]) {
   const command = args.shift()
@@ -33,7 +34,8 @@ export async function cli (args: string[]) {
       Distributions.write(),
       Apis.write(),
       Stacks.write(),
-      Alarms.write()
+      Alarms.write(),
+      Canaries.write()
     ])
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
