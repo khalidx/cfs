@@ -4,6 +4,12 @@
 
 An easy way to discover and manage your cloud like a local filesystem.
 
+## install
+
+```sh
+npm install -g @khalidx/cfs
+```
+
 ## cli
 
 ```sh
