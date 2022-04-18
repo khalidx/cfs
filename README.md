@@ -9,6 +9,7 @@ An easy way to discover and manage your cloud like a local filesystem.
 ```sh
 cfs
 cfs ls
+cfs clean
 ```
 
 ## discovering resources
@@ -38,6 +39,14 @@ cfs ls | xargs grep -l us-east-1
 ```
 
 Of course, you could also use the built-in search in your favorite IDE (like VSCode) or open and browse the files directly!
+
+To remove all downloaded resources from the local filesystem (without affecting anything in your cloud account), run:
+
+```sh
+cfs clean
+```
+
+This is the same as deleting the `.cfs/` directory yourself with `rm -rf .cfs/`.
 
 ## updating resources
 

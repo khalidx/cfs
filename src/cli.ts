@@ -1,4 +1,4 @@
-import { ensureDir, writeFile } from 'fs-extra'
+import { ensureDir, writeFile, remove } from 'fs-extra'
 import globby from 'globby'
 
 import Regions from './resources/regions'
@@ -37,6 +37,8 @@ export async function cli (args: string[]) {
   } else if (command === 'ls' || command === 'list') {
     const paths = await globby([ '.cfs/**/*' ])
     paths.forEach(path => console.log(path))
+  } else if (command === 'clean') {
+    await remove('.cfs/')
   } else {
     throw new CliUserError(`The provided command is invalid: "${command}"`)
   }
