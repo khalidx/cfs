@@ -16,6 +16,7 @@ import Stacks from './resources/stacks'
 import Alarms from './resources/alarms'
 import Canaries from './resources/canaries'
 import Instances from './resources/instances'
+import Parameters from './resources/parameters'
 
 export async function cli (args: string[]) {
   const command = args.shift()
@@ -39,7 +40,8 @@ export async function cli (args: string[]) {
       Stacks.write(),
       Alarms.write(),
       Canaries.write(),
-      Instances.write()
+      Instances.write(),
+      Parameters.write()
     ])
     console.debug(`The operation took ${Date.now() - started} ms.`)
     console.log('Success')
