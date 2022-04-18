@@ -18,6 +18,20 @@ Also, a native binary is available for [Windows](https://github.com/khalidx/cfs/
 
 Need help using this application? [Read this](#support).
 
+## introduction
+
+Or, "why do I need this application?".
+
+If you're like me, you spend countless hours working with cloud resources, like S3 buckets and EC2 instances.
+
+Sometimes, you just want to be able to see [*ALL* the resources](#supported-resources) in your AWS account. Especially when starting a new job or taking inventory of what's in your cloud.
+
+Searching for a specific resource or across resources is usually a sub-par experience in most cloud consoles.
+
+When you are searching for something specific, and would rather have all your resources as files locally, so that you can search through them and process them with other tools, reach for `cfs`.
+
+`cfs` exports all your cloud resources as JSON files.
+
 ## cli
 
 ```sh
