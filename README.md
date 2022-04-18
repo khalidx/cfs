@@ -47,6 +47,8 @@ Of course, you could also use the built-in search in your favorite IDE (like VSC
 
 The following cloud resources are [currently supported](./src/resources/):
 
+- AWS API Gateway HTTP APIs
+- AWS API Gateway REST APIs
 - AWS S3 Buckets
 - AWS ACM Certificates
 - AWS CloudFront Distributions

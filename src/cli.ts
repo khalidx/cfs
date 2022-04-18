@@ -11,6 +11,7 @@ import Functions from './resources/functions'
 import Queues from './resources/queues'
 import Topics from './resources/topics'
 import Distributions from './resources/distributions'
+import Apis from './resources/apis'
 
 export async function cli (args: string[]) {
   const command = args.shift()
@@ -27,7 +28,8 @@ export async function cli (args: string[]) {
       Functions.write(),
       Queues.write(),
       Topics.write(),
-      Distributions.write()
+      Distributions.write(),
+      Apis.write()
     ])
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
