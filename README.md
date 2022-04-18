@@ -68,6 +68,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS CloudFront Distributions
 - AWS Route53 Hosted Zones
 - AWS Lambda Functions
+- AWS EC2 Instances
 - AWS SQS Queues
 - AWS Regions
 - AWS CloudFormation Stacks
