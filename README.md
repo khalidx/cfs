@@ -4,6 +4,10 @@
 
 An easy way to discover and manage your cloud like a local filesystem.
 
+[![npm package version badge](https://img.shields.io/npm/v/@khalidx/cfs.svg?style=flat-square)](https://www.npmjs.com/package/@khalidx/cfs)
+[![GitHub last commit badge](https://img.shields.io/github/last-commit/khalidx/cfs.svg?style=flat-square)](https://github.com/khalidx/cfs/commits/main)
+[![GitHub license badge](https://img.shields.io/github/license/khalidx/cfs.svg?style=flat-square)](https://github.com/khalidx/cfs/blob/main/LICENSE)
+
 ## install
 
 ```sh
