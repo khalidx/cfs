@@ -22,6 +22,8 @@ export async function cli (args: string[]) {
   if (command === undefined || command === 'sync') {
     await ensureDir('.cfs/')
     await writeFile('.cfs/.gitignore', '*\n')
+    console.debug('Downloading resource information ...')
+    const started = Date.now()
     await Regions.write()
     await Promise.all([
       Vpcs.write(),
@@ -39,6 +41,7 @@ export async function cli (args: string[]) {
       Canaries.write(),
       Instances.write()
     ])
+    console.debug(`The operation took ${Date.now() - started} ms.`)
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
     const paths = await globby([ '.cfs/**/*' ])
