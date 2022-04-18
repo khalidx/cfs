@@ -8,7 +8,7 @@ An easy way to discover and manage your cloud like a local filesystem.
 [![GitHub last commit badge](https://img.shields.io/github/last-commit/khalidx/cfs.svg?style=flat-square)](https://github.com/khalidx/cfs/commits/main)
 [![GitHub license badge](https://img.shields.io/github/license/khalidx/cfs.svg?style=flat-square)](https://github.com/khalidx/cfs/blob/main/LICENSE)
 
-## install
+## ⏬ install
 
 ```sh
 npm install -g @khalidx/cfs
