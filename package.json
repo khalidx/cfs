@@ -27,6 +27,12 @@
   "bugs": {
     "url": "https://github.com/khalidx/cfs/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/"
+  ],
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^17.0.24",
