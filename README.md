@@ -16,6 +16,8 @@ npm install -g @khalidx/cfs
 
 Also, a native binary is available for [Windows](https://github.com/khalidx/cfs/releases/download/v0.1.0/cfs-win.exe), [Mac](https://github.com/khalidx/cfs/releases/download/v0.1.0/cfs-macos), and [Linux](https://github.com/khalidx/cfs/releases/download/v0.1.0/cfs-linux).
 
+Need help using this application? [Read this](#support).
+
 ## cli
 
 ```sh
@@ -106,3 +108,7 @@ Here's a quick guide from AWS on [configuring your credentials with the AWS CLI]
 This section is for developers working on the `cfs` code. If you are instead looking for usage instructions, see the sections above.
 
 After cloning, run `npm link` to make the `cfs` CLI available. You can now edit the TypeScript source files, and whenever you run `cfs` you'll be working with the latest sources directly, without having to build/compile the TypeScript files.
+
+## support
+
+🚀 Over the **next week** (April 18-25 2022), all Github issues submitted will receive an 8-hour turnaround time, for a good beta testing experience!
