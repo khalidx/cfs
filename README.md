@@ -12,6 +12,8 @@ cfs ls
 cfs clean
 ```
 
+> Make sure you're [logged in to AWS](#aws-credentials) before running the commands above.
+
 ## discovering resources
 
 ```sh
@@ -70,11 +72,17 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS SNS Topics
 - AWS VPCs
 
-> Make sure you're logged in to AWS, and have the corresponding credentials file or environment variables set. Otherwise, `cfs` won't be able to query your cloud resources. Here's a quick guide from AWS on [configuring your credentials with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
+More resources are coming soon, with the goal of covering all resources listed on the [AWS resource and property types reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) page.
 
 ## plugins
 
 (coming soon)
+
+## aws credentials
+
+Make sure you're logged in to AWS, and have the corresponding credentials file or environment variables set. Otherwise, `cfs` won't be able to query your cloud resources.
+
+Here's a quick guide from AWS on [configuring your credentials with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
 
 ## developers
 
