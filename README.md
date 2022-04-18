@@ -25,7 +25,7 @@ cfs ls
 
 Running the command above lists the names of all resource files to the console. This is useful for passing the output to other tools, like `grep`.
 
-For example, for viewing "vpc" resource only (searching file names):
+For example, for viewing "vpc" resources only (searching file names):
 
 ```sh
 cfs ls | grep vpc
