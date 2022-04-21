@@ -10,7 +10,6 @@ export class Apis {
   stringSchema = z.string().min(1).max(500)
 
   apiItemSchema = z.object({
-    id: this.stringSchema,
     name: this.stringSchema,
     description: this.stringSchema,
     createdDate: z.date(),
@@ -33,12 +32,13 @@ export class Apis {
     policy: this.stringSchema,
     tags: z.object({}).passthrough(),
     disableExecuteApiEndpoint: z.boolean()
+  }).deepPartial().extend({
+    id: this.stringSchema
   })
 
   apiv2ItemSchema = z.object({
     ApiEndpoint: this.stringSchema,
     ApiGatewayManaged: z.boolean().optional(),
-    ApiId: this.stringSchema,
     ApiKeySelectionExpression: this.stringSchema,
     CorsConfiguration: z.object({
       AllowCredentials: z.boolean(),
@@ -62,6 +62,8 @@ export class Apis {
     Tags: z.object({}).passthrough(),
     Version: this.stringSchema.optional(),
     Warnings: z.array(this.stringSchema).optional()
+  }).deepPartial().extend({
+    ApiId: this.stringSchema
   })
 
   apiCollectionSchema = z.array(this.apiItemSchema).min(0).max(10000)

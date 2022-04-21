@@ -9,7 +9,6 @@ export class Canaries {
   stringSchema = z.string().min(1).max(500)
 
   itemSchema = z.object({
-    Id: this.stringSchema,
     Name: this.stringSchema,
     Code: z.object({
       SourceLocationArn: this.stringSchema,
@@ -73,6 +72,8 @@ export class Canaries {
         KmsKeyArn: this.stringSchema
       })
     })
+  }).deepPartial().extend({
+    Id: this.stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

@@ -9,7 +9,6 @@ export class Stacks {
   stringSchema = z.string().min(1).max(500)
 
   itemSchema = z.object({
-    StackId: this.stringSchema,
     StackName: this.stringSchema,
     ChangeSetId: this.stringSchema.optional(),
     Description: this.stringSchema.optional(),
@@ -86,6 +85,8 @@ export class Stacks {
       ]),
       LastCheckTimestamp: z.date().optional()
     })
+  }).deepPartial().extend({
+    StackId: this.stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

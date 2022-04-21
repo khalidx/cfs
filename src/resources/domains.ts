@@ -7,7 +7,6 @@ export class Domains {
   stringSchema = z.string().min(1).max(500)
 
   itemSchema = z.object({
-    Id: this.stringSchema,
     Name: this.stringSchema,
     CallerReference: this.stringSchema,
     Config: z.object({
@@ -19,6 +18,8 @@ export class Domains {
       ServicePrincipal: this.stringSchema,
       Description: this.stringSchema
     }).optional()
+  }).deepPartial().extend({
+    Id: this.stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

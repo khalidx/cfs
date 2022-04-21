@@ -7,9 +7,10 @@ export class Regions {
   regionNameSchema = z.string().min(1).max(100)
 
   itemSchema = z.object({
-    RegionName: this.regionNameSchema,
     Endpoint: z.string().min(1).max(500),
     OptInStatus: z.string().min(1).max(500)
+  }).deepPartial().extend({
+    RegionName: this.regionNameSchema
   })
   
   collectionSchema = z.array(this.itemSchema).min(1).max(1000)

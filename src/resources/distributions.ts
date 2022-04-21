@@ -91,7 +91,6 @@ export class Distributions {
   })
 
   itemSchema = z.object({
-    Id: this.stringSchema,
     ARN: this.stringSchema,
     Status: this.stringSchema,
     LastModifiedTime: z.date(),
@@ -272,6 +271,8 @@ export class Distributions {
         z.literal('SUSPENDED')
       ])
     }))
+  }).deepPartial().extend({
+    Id: this.stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

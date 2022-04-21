@@ -21,7 +21,6 @@ export class Vpcs {
   })
 
   itemSchema = z.object({
-    VpcId: this.stringSchema,
     CidrBlock: this.stringSchema,
     DhcpOptionsId: this.stringSchema,
     OwnerId: this.stringSchema,
@@ -51,6 +50,8 @@ export class Vpcs {
       Key: z.string().min(1).max(500),
       Value: z.string().min(1).max(500)
     })).optional()
+  }).deepPartial().extend({
+    VpcId: this.stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(1).max(10000)

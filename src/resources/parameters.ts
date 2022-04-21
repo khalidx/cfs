@@ -10,7 +10,6 @@ export class Parameters {
   stringSchema = z.string().min(1).max(500)
 
   itemSchema = z.object({
-    Name: z.string().min(1).max(10000),
     Type: z.union([
       z.literal('SecureString'),
       z.literal('String'),
@@ -33,6 +32,8 @@ export class Parameters {
       PolicyStatus: this.stringSchema
     })),
     DataType: this.stringSchema
+  }).deepPartial().extend({
+    Name: z.string().min(1).max(10000)
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000000)

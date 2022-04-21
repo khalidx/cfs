@@ -51,7 +51,6 @@ export class Alarms {
 
   metricAlarmsItemSchema = z.object({
     AlarmName: this.stringSchema,
-    AlarmArn: this.stringSchema,
     AlarmDescription: this.stringSchema,
     AlarmConfigurationUpdatedTimestamp: z.date(),
     ActionsEnabled: z.boolean(),
@@ -108,6 +107,8 @@ export class Alarms {
       AccountId: this.stringSchema
     })),
     ThresholdMetricId: this.stringSchema
+  }).deepPartial().extend({
+    AlarmArn: this.stringSchema
   })
 
   metricAlarmsCollectionSchema = z.array(this.metricAlarmsItemSchema).min(0).max(10000)
@@ -115,7 +116,6 @@ export class Alarms {
   compositeAlarmsItemSchema = z.object({
     ActionsEnabled: z.boolean(),
     AlarmActions: z.array(this.stringSchema),
-    AlarmArn: this.stringSchema,
     AlarmConfigurationUpdatedTimestamp: z.date(),
     AlarmDescription: this.stringSchema,
     AlarmName: this.stringSchema,
@@ -126,6 +126,8 @@ export class Alarms {
     StateReasonData: this.stringSchema,
     StateUpdatedTimestamp: z.date(),
     StateValue: this.stateValueSchema
+  }).deepPartial().extend({
+    AlarmArn: this.stringSchema
   })
 
   compositeAlarmsCollectionSchema = z.array(this.compositeAlarmsItemSchema).min(0).max(10000)

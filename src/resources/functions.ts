@@ -9,7 +9,6 @@ export class Functions {
   stringSchema = z.string().min(1).max(500)
 
   itemSchema = z.object({
-    FunctionName: this.stringSchema,
     FunctionArn: this.stringSchema,
     Runtime: this.stringSchema,
     Role: this.stringSchema,
@@ -119,6 +118,8 @@ export class Functions {
     EphemeralStorage: z.object({
       Size: z.number()
     })
+  }).deepPartial().extend({
+    FunctionName: this.stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)
