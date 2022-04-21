@@ -1,7 +1,8 @@
 import minimist from 'minimist'
-import { ZodError } from 'zod'
 import { ensureDir, writeFile, remove } from 'fs-extra'
 import globby from 'globby'
+
+import { ZodError, CliUserError, addError, getErrors, getSerializedErrors } from './errors'
 
 import Regions from './resources/regions'
 import Vpcs from './resources/vpcs'
@@ -30,7 +31,7 @@ export async function cli (args: string[]) {
     Regions.set(region)
     const started = Date.now()
     console.debug('Downloading resource information ...')
-    await Regions.write()
+    await Regions.write().catch(addError)
     await Promise.all([
       Vpcs.write(),
       Buckets.write(),
@@ -47,8 +48,13 @@ export async function cli (args: string[]) {
       Canaries.write(),
       Instances.write(),
       Parameters.write()
-    ])
+    ].map(operation => operation.catch(addError)))
     console.debug(`The operation took ${Date.now() - started} ms.`)
+    const errors = getErrors()
+    if (errors.length > 0) {
+      await writeFile('.cfs/errors.log', JSON.stringify(getSerializedErrors(), null, 2))
+      throw new CliUserError('The operation completed, but with some errors. Check the .cfs/errors.log file for more information.')
+    }
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
     const paths = await globby([ '.cfs/**/*' ])
@@ -57,12 +63,6 @@ export async function cli (args: string[]) {
     await remove('.cfs/')
   } else {
     throw new CliUserError(`The provided command is invalid: "${command}"`)
-  }
-}
-
-export class CliUserError extends Error {
-  constructor (message: string) {
-    super(message)
   }
 }
 
