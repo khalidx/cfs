@@ -15,11 +15,20 @@ export class Regions {
   
   collectionSchema = z.array(this.itemSchema).min(1).max(1000)
 
+  private region: string | undefined = undefined
   private regions: z.infer<typeof this.collectionSchema> = []
+
+  set (region: string | undefined) {
+    if (region) {
+      this.region = region
+    }
+  }
 
   async describeRegions () {
     const ec2 = new EC2({ region: 'us-east-1' })
-    const describeRegions = await ec2.describeRegions({ AllRegions: false })
+    const describeRegions = (this.region)
+      ? await ec2.describeRegions({ AllRegions: false, Filters: [ { Name: 'region-name', Values: [ this.region ] } ] })
+      : await ec2.describeRegions({ AllRegions: false })
     return describeRegions.Regions
   }
 

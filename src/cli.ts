@@ -1,3 +1,4 @@
+import minimist from 'minimist'
 import { ZodError } from 'zod'
 import { ensureDir, writeFile, remove } from 'fs-extra'
 import globby from 'globby'
@@ -20,12 +21,15 @@ import Instances from './resources/instances'
 import Parameters from './resources/parameters'
 
 export async function cli (args: string[]) {
-  const command = args.shift()
+  const argv = minimist(args)
+  const command = argv._.shift()
+  const region = typeof argv['region'] === 'string' ? argv['region'] : undefined
   if (command === undefined || command === 'sync') {
     await ensureDir('.cfs/')
     await writeFile('.cfs/.gitignore', '*\n')
-    console.debug('Downloading resource information ...')
+    Regions.set(region)
     const started = Date.now()
+    console.debug('Downloading resource information ...')
     await Regions.write()
     await Promise.all([
       Vpcs.write(),

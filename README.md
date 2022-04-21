@@ -50,6 +50,8 @@ cfs
 
 Running the command above outputs all [discovered resources](#supported-resources) to `.cfs/` in the current directory.
 
+Optionally, pass `--region` to limit discovery to a single region, like `cfs --region us-east-1`.
+
 ```sh
 cfs ls
 ```
