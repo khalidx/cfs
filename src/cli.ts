@@ -1,4 +1,5 @@
 import minimist from 'minimist'
+import { blue, yellow, italic, bold } from 'chalk'
 import { ensureDir, writeFile, remove } from 'fs-extra'
 import globby from 'globby'
 
@@ -62,9 +63,29 @@ export async function cli (args: string[]) {
     paths.forEach(path => console.log(path))
   } else if (command === 'clean') {
     await remove('.cfs/')
+  } else if (command === 'help') {
+    console.log(blue(logo()))
+    console.log('version   ', yellow(`v${require('../package.json').version}`))
+    console.log('repository', yellow('https://github.com/khalidx/cfs'))
+    console.log()
+    console.log(italic('commands'))
+    console.log(`  cfs        ${bold('Outputs all discovered resources to `.cfs/` in the current directory.')}`)
+    console.log(`  cfs ${blue('ls')}     ${bold('Lists the names of all resource files to the console.')}`)
+    console.log(`  cfs ${blue('clean')}  Deletes the \`.cfs/\` directory.`)
+    console.log(`  cfs ${blue('help')}   Outputs this help message.`)
+    console.log()
   } else {
     throw new CliUserError(`The provided command is invalid: "${command}"`)
   }
+}
+
+export function logo () {
+  return '' +
+`
+┌─┐┌─┐┌─┐
+│  ├┤ └─┐
+└─┘└  └─┘
+`
 }
 
 export function start (module: NodeModule) {

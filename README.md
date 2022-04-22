@@ -38,6 +38,7 @@ When you are searching for something specific, and would rather have all your re
 cfs
 cfs ls
 cfs clean
+cfs help
 ```
 
 > Make sure you're [logged in to AWS](#aws-credentials) before running the commands above.
