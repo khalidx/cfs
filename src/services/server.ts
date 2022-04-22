@@ -5,7 +5,7 @@ export async function startServer (resources: Array<{ id: number, path: string, 
   const app = express()
   app.get('/', (_req, res, _next) => {
     res.contentType('text/html')
-    res.send(`
+    return res.send(`
       <style>
         body {
           margin: 0;
@@ -63,14 +63,13 @@ export async function startServer (resources: Array<{ id: number, path: string, 
     `)
   })
   app.get('/search', (req, res, _next) => {
-    if (!req.query['q']) res.status(400).send('400 - Bad Request')
+    if (!req.query['q']) return res.status(400).send('400 - Bad Request')
     const query = req.query['q']
     if (query && typeof query === 'string') {
       const lowercase = query.toLowerCase()
-      res.json(resources.filter(resource => resource.path.toLowerCase().includes(lowercase) || resource.content.toLowerCase().includes(lowercase)))
-    } else {
-      res.status(400).send('400 - Bad Request')
+      return res.json(resources.filter(resource => resource.path.toLowerCase().includes(lowercase) || resource.content.toLowerCase().includes(lowercase)))
     }
+    return res.status(400).send('400 - Bad Request')
   })
   const port = 3000
   const url = `http://localhost:${port}/`
