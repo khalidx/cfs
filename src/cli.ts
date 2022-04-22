@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import { blue, yellow, italic, bold } from 'chalk'
-import { ensureDir, writeFile, remove } from 'fs-extra'
+import { ensureDir, writeFile, readFile, remove } from 'fs-extra'
 import globby from 'globby'
 
 import { ZodError, CliUserError, addError, getErrors, getSerializedErrors } from './errors'
@@ -25,10 +25,10 @@ import Parameters from './resources/parameters'
 export async function cli (args: string[]) {
   const argv = minimist(args)
   const command = argv._.shift()
-  const region = typeof argv['region'] === 'string' ? argv['region'] : undefined
   if (command === undefined || command === 'sync') {
     await ensureDir('.cfs/')
     await writeFile('.cfs/.gitignore', '*\n')
+    const region = typeof argv['region'] === 'string' ? argv['region'] : undefined
     Regions.set(region)
     const started = Date.now()
     console.debug('Downloading resource information ...')
@@ -61,6 +61,18 @@ export async function cli (args: string[]) {
   } else if (command === 'ls' || command === 'list') {
     const paths = await globby([ '.cfs/**/*', '!.cfs/.gitignore', '!.cfs/errors.log' ])
     paths.forEach(path => console.log(path))
+  } else if (command === 'find') {
+    const text = argv._.shift()
+    if (text === undefined) throw new CliUserError('Please provide the text to search for, like `cfs find "m5.large"`.')
+    if (!['string', 'number'].includes(typeof text)) throw new CliUserError('The text to search for must be a string or a number, like `cfs find "m5.large"`.')
+    const textString = String(text)
+    const paths = await globby([ '.cfs/**/*', '!.cfs/.gitignore', '!.cfs/errors.log' ])
+    const matched = await Promise.all(paths.map(async path => {
+      if (path.includes(textString)) return { path, found: true }
+      const content = await readFile(path, 'utf-8')
+      return { path, found: content.includes(textString) }
+    }))
+    matched.filter(match => match.found === true).forEach(match => console.log(match.path))
   } else if (command === 'clean') {
     await remove('.cfs/')
   } else if (command === 'help') {
@@ -69,10 +81,11 @@ export async function cli (args: string[]) {
     console.log('repository', yellow('https://github.com/khalidx/cfs'))
     console.log()
     console.log(italic('commands'))
-    console.log(`  cfs        ${bold('Outputs all discovered resources to `.cfs/` in the current directory.')}`)
-    console.log(`  cfs ${blue('ls')}     ${bold('Lists the names of all resource files to the console.')}`)
-    console.log(`  cfs ${blue('clean')}  Deletes the \`.cfs/\` directory.`)
-    console.log(`  cfs ${blue('help')}   Outputs this help message.`)
+    console.log(`  cfs              ${bold('Outputs all discovered resources to `.cfs/` in the current directory.')}`)
+    console.log(`  cfs ${blue('ls')}           ${bold('Lists the names of all resource files to the console.')}`)
+    console.log(`  cfs ${blue('find')} ${yellow('<text>')}  ${bold('Search for text across all resource file names and contents.')}`)
+    console.log(`  cfs ${blue('clean')}        Deletes the \`.cfs/\` directory.`)
+    console.log(`  cfs ${blue('help')}         Outputs this help message.`)
     console.log()
   } else {
     throw new CliUserError(`The provided command is invalid: "${command}"`)

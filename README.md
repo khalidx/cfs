@@ -37,6 +37,7 @@ When you are searching for something specific, and would rather have all your re
 ```sh
 cfs
 cfs ls
+cfs find
 cfs clean
 cfs help
 ```
@@ -72,6 +73,12 @@ cfs ls | xargs grep -l us-east-1
 ```
 
 Of course, you could also use the built-in search in your favorite IDE (like VSCode) or open and browse the files directly!
+
+You can also search cloud resource files (their file names and contents) with `cfs find`, like so:
+
+```sh
+cfs find "m5.large"
+```
 
 To remove all downloaded resources from the local filesystem (without affecting anything in your cloud account), run:
 
