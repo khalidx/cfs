@@ -66,7 +66,8 @@ export async function startServer (resources: Array<{ id: number, path: string, 
     if (!req.query['q']) res.status(400).send('400 - Bad Request')
     const query = req.query['q']
     if (query && typeof query === 'string') {
-      res.json(resources.filter(resource => resource.path.includes(query) || resource.content.includes(query)))
+      const lowercase = query.toLowerCase()
+      res.json(resources.filter(resource => resource.path.toLowerCase().includes(lowercase) || resource.content.toLowerCase().includes(lowercase)))
     } else {
       res.status(400).send('400 - Bad Request')
     }

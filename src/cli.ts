@@ -84,12 +84,12 @@ export async function cli (args: string[]) {
     const text = argv._.shift()
     if (text === undefined) throw new CliUserError('Please provide the text to search for, like `cfs find "m5.large"`.')
     if (!['string', 'number'].includes(typeof text)) throw new CliUserError('The text to search for must be a string or a number, like `cfs find "m5.large"`.')
-    const textString = String(text)
+    const textString = String(text).toLowerCase()
     const paths = await globby([ '.cfs/**/*', '!.cfs/.gitignore', '!.cfs/errors.log' ])
     const matched = await Promise.all(paths.map(async path => {
-      if (path.includes(textString)) return { path, found: true }
+      if (path.toLowerCase().includes(textString)) return { path, found: true }
       const content = await readFile(path, 'utf-8')
-      return { path, found: content.includes(textString) }
+      return { path, found: content.toLowerCase().includes(textString) }
     }))
     matched.filter(match => match.found === true).forEach(match => console.log(match.path))
   } else if (command === 'browse') {
