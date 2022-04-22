@@ -57,7 +57,7 @@ export async function cli (args: string[]) {
     }
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
-    const paths = await globby([ '.cfs/**/*' ])
+    const paths = await globby([ '.cfs/**/*', '!.cfs/.gitignore', '!.cfs/errors.log' ])
     paths.forEach(path => console.log(path))
   } else if (command === 'clean') {
     await remove('.cfs/')
