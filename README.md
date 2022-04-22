@@ -2,7 +2,7 @@
 
 <img src="img/banner.jpeg" alt="A blue gradient banner image">
 
-<img src="img/logo.svg" alt="cloudfs - An easy way to discover and manage your cloud like a local filesystem." width="350px">
+<img src="logo.svg" alt="cloudfs - An easy way to discover and manage your cloud like a local filesystem." width="350px">
 
 An easy way to discover and manage your cloud like a local filesystem.
 
