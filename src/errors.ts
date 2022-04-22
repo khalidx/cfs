@@ -1,5 +1,3 @@
-import { serializeError } from 'serialize-error'
-
 export { ZodError } from 'zod'
 
 export class CliUserError extends Error {
@@ -14,7 +12,4 @@ export function addError (error: unknown) {
 }
 export function getErrors () {
   return errors
-}
-export function getSerializedErrors () {
-  return errors.map(error => serializeError(error))
 }
