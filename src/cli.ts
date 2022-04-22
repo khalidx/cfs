@@ -49,7 +49,8 @@ export async function cli (args: string[]) {
       Instances.write(),
       Parameters.write()
     ].map(operation => operation.catch(addError)))
-    console.debug(`The operation took ${Date.now() - started} ms.`)
+    const duration = Math.ceil((Date.now() - started) / 1000)
+    console.debug(`The operation took ${duration} ${duration === 1 ? 'second' : 'seconds'}.`)
     const errors = getErrors()
     if (errors.length > 0) {
       await writeFile('.cfs/errors.log', JSON.stringify(getSerializedErrors(), null, 2))
