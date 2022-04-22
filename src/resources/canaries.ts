@@ -3,6 +3,7 @@ import { Synthetics, paginateDescribeCanaries } from '@aws-sdk/client-synthetics
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Canaries {
 
@@ -111,7 +112,7 @@ export class Canaries {
           await writeFile(`.cfs/canaries/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(canary.Id)}`, JSON.stringify(canary, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

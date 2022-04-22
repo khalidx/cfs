@@ -4,6 +4,7 @@ import { ApiGatewayV2 } from '@aws-sdk/client-apigatewayv2'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Apis {
 
@@ -126,7 +127,7 @@ export class Apis {
           await writeFile(`.cfs/apis/http/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(api.ApiId)}`, JSON.stringify(api, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

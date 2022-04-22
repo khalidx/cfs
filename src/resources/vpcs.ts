@@ -3,6 +3,7 @@ import { EC2, paginateDescribeVpcs } from '@aws-sdk/client-ec2'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Vpcs {
 
@@ -89,7 +90,7 @@ export class Vpcs {
           await writeFile(`.cfs/vpcs/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(vpc.VpcId)}`, JSON.stringify(vpc, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

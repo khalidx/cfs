@@ -3,6 +3,7 @@ import { DynamoDB, paginateListTables } from '@aws-sdk/client-dynamodb'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Tables {
 
@@ -43,7 +44,7 @@ export class Tables {
           await writeFile(`.cfs/tables/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(table)}`, JSON.stringify(table, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

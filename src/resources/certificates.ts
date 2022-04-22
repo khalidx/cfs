@@ -3,6 +3,7 @@ import { ACM, paginateListCertificates } from '@aws-sdk/client-acm'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Certificates {
 
@@ -48,7 +49,7 @@ export class Certificates {
           await writeFile(`.cfs/certificates/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(certificate.CertificateArn.substring(certificate.CertificateArn.indexOf(':certificate/') + ':certificate/'.length))}`, JSON.stringify(certificate, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

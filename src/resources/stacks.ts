@@ -3,6 +3,7 @@ import { CloudFormation, paginateDescribeStacks } from '@aws-sdk/client-cloudfor
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Stacks {
 
@@ -124,7 +125,7 @@ export class Stacks {
           await writeFile(`.cfs/stacks/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(stack.StackId.substring(stack.StackId.indexOf(':stack/') + ':stack/'.length))}`, JSON.stringify(stack, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

@@ -3,6 +3,7 @@ import { SNS, paginateListTopics } from '@aws-sdk/client-sns'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Topics {
 
@@ -47,7 +48,7 @@ export class Topics {
           await writeFile(`.cfs/topics/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(topic.TopicArn.substring(topic.TopicArn.indexOf(':topic/') + ':topic/'.length))}`, JSON.stringify(topic, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

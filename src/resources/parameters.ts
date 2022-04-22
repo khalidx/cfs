@@ -4,6 +4,7 @@ import { ensureDir, remove, writeFile } from 'fs-extra'
 import { resolve, dirname } from 'path'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Parameters {
 
@@ -73,7 +74,7 @@ export class Parameters {
           await writeFile(`.cfs/parameters/${encodeURIComponent(entry.region.RegionName)}/${name}`, JSON.stringify(parameter, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

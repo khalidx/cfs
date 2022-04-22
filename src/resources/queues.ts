@@ -3,6 +3,7 @@ import { SQS, paginateListQueues } from '@aws-sdk/client-sqs'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Queues {
 
@@ -43,7 +44,7 @@ export class Queues {
           await writeFile(`.cfs/queues/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(queue)}`, JSON.stringify(queue, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

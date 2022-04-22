@@ -3,6 +3,7 @@ import { CloudWatch, paginateDescribeAlarms } from '@aws-sdk/client-cloudwatch'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Alarms {
 
@@ -172,7 +173,7 @@ export class Alarms {
           await writeFile(`.cfs/alarms/composite/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(alarm.AlarmArn.substring(alarm.AlarmArn.indexOf(':alarm/') + ':alarm/'.length))}`, JSON.stringify(alarm, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

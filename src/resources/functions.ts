@@ -3,6 +3,7 @@ import { Lambda, paginateListFunctions } from '@aws-sdk/client-lambda'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Functions {
 
@@ -157,7 +158,7 @@ export class Functions {
           await writeFile(`.cfs/functions/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(func.FunctionName)}`, JSON.stringify(func, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }

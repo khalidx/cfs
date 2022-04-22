@@ -3,6 +3,7 @@ import { EC2, paginateDescribeInstances } from '@aws-sdk/client-ec2'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { addError } from '../errors'
 
 export class Instances {
 
@@ -47,7 +48,7 @@ export class Instances {
           await writeFile(`.cfs/instances/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(instance.ReservationId)}`, JSON.stringify(instance, null, 2))
         }
       }
-    }))
+    }).map(promise => promise.catch(addError)))
   }
 
 }
