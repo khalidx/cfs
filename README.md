@@ -38,6 +38,7 @@ When you are searching for something specific, and would rather have all your re
 cfs
 cfs ls
 cfs find
+cfs browse
 cfs clean
 cfs help
 ```
@@ -78,6 +79,12 @@ You can also search cloud resource files (their file names and contents) with `c
 
 ```sh
 cfs find "m5.large"
+```
+
+Another cool option is being able to explore all your resources in a web browser, complete with full-text search! The following command starts up a server and opens your web browser so you can start exploring:
+
+```sh
+cfs browse
 ```
 
 To remove all downloaded resources from the local filesystem (without affecting anything in your cloud account), run:

@@ -22,6 +22,8 @@ import Canaries from './resources/canaries'
 import Instances from './resources/instances'
 import Parameters from './resources/parameters'
 
+import { startServer } from './services/server'
+
 export async function cli (args: string[]) {
   const argv = minimist(args)
   const command = argv._.shift()
@@ -73,6 +75,10 @@ export async function cli (args: string[]) {
       return { path, found: content.includes(textString) }
     }))
     matched.filter(match => match.found === true).forEach(match => console.log(match.path))
+  } else if (command === 'browse') {
+    const paths = await globby([ '.cfs/**/*', '!.cfs/.gitignore', '!.cfs/errors.log' ])
+    const resources = await Promise.all(paths.map(async (path, index) => ({ id: index, path, content: await readFile(path, 'utf-8') })))
+    await startServer(resources)
   } else if (command === 'clean') {
     await remove('.cfs/')
   } else if (command === 'help') {
@@ -84,6 +90,7 @@ export async function cli (args: string[]) {
     console.log(`  cfs              ${bold('Outputs all discovered resources to `.cfs/` in the current directory.')}`)
     console.log(`  cfs ${blue('ls')}           ${bold('Lists the names of all resource files to the console.')}`)
     console.log(`  cfs ${blue('find')} ${yellow('<text>')}  ${bold('Search for text across all resource file names and contents.')}`)
+    console.log(`  cfs ${blue('browse')}       ${bold('Opens the browser for exploring resources.')}`)
     console.log(`  cfs ${blue('clean')}        Deletes the \`.cfs/\` directory.`)
     console.log(`  cfs ${blue('help')}         Outputs this help message.`)
     console.log()
