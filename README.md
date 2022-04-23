@@ -21,6 +21,8 @@ Also, a native binary is available for [Windows](https://github.com/khalidx/cfs/
 
 Need help using this application? [Read this](#support).
 
+<img src="img/cli-screenshot.png" alt="A screenshot of the help menu for the cfs CLI">
+
 ## introduction
 
 Or, "why do I need this application?".
