@@ -360,7 +360,11 @@ input#search:focus:-ms-placeholder {
   }
   input.onkeyup = debounce(function (event) {
     search(event.target.value);
-    history.replaceState(null, null, "#" + encodeURIComponent(event.target.value));
+    if (event.target.value) {
+      history.replaceState(null, null, "#" + encodeURIComponent(event.target.value));
+    } else {
+      history.replaceState(null, null, '/');
+    }
   }, 200)
 </script>
 
