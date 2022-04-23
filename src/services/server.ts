@@ -193,7 +193,6 @@ ul.items li.item .result .icon {
 }
 ul.items li.item .result .name {
   margin-left: 20px;
-  height: 25px;
   border-radius: 15px;
 }
 
