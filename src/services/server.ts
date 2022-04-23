@@ -7,7 +7,7 @@ export async function startServer (resources: Array<{ id: number, path: string, 
   const app = express()
   app.get('/', (_req, res, _next) => {
     res.contentType('text/html')
-    res.send(indexHtml())
+    res.send(indexHtml({ count: resources.length }))
   })
   app.get('/search', (req, res, _next) => {
     const query = req.query['q']
@@ -100,7 +100,7 @@ export async function startServer (resources: Array<{ id: number, path: string, 
   await open(url)
 }
 
-export function indexHtml () {
+export function indexHtml (params: { count: number }) {
   return '' +
 `
 <html>
@@ -167,6 +167,11 @@ header {
 header .column {
   width: 725px;
   text-align: left;
+}
+header .search-subtitle {
+  font-weight: 400;
+  margin-top: 5px;
+  text-align: right;
 }
 
 ul.items li.item {
@@ -256,6 +261,9 @@ input#search:focus:-ms-placeholder {
       <img src="/img/logo" alt="cloudfs - An easy way to discover and manage your cloud like a local filesystem." width="350px">
       <div class="search-container">
         <input id="search" type="text" placeholder="Just start typing to search" autocomplete="off" autofocus />
+        <div class="search-subtitle">
+          <small id="count">${params.count} ${params.count === 1 ? 'resource' : 'resources'} discovered</small>
+        </div>
       </div>
         </div>
     </header>
@@ -319,18 +327,24 @@ input#search:focus:-ms-placeholder {
 
 <!-- Script: Main Script -->
 <script type="text/javascript">
+  var count = document.getElementById("count");
   var results = document.getElementById("results");
+  var originalCount = count.innerHTML;
   var lastValue = '';
   function isSameRequest (value) { return lastValue === value; };
   function search (value) {
     if (isSameRequest(value)) return;
     lastValue = value;
     results.innerHTML = "";
-    if (value === "") return;
+    if (value === "") {
+      count.innerHTML = originalCount;
+      return;
+    };
     var params = new URLSearchParams();
     params.append("q", value);
     fetch("/search?" + params.toString()).then(response => response.json()).then(resources => {
       if (!isSameRequest(value)) return;
+      count.innerHTML = \`\${resources.length} \${resources.length === 1 ? 'resource' : 'resources'} discovered\`;
       resources.forEach(resource => {
         if (!isSameRequest(value)) return;
         const result = document.createElement("div");
