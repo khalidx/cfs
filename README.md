@@ -92,6 +92,10 @@ Another cool option is being able to explore all your resources in a web browser
 cfs browse
 ```
 
+The command above opens the following attractive experience for searching your resources. It runs on `localhost`, and your data stays local and never leaves your device.
+
+<img src="img/browse-screenshot.png" alt="A screenshot of the cfs browse command web experience">
+
 To remove all downloaded resources from the local filesystem (without affecting anything in your cloud account), run:
 
 ```sh
