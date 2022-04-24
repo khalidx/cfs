@@ -130,6 +130,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS SQS Queues
 - AWS Regions
 - AWS CloudFormation Stacks
+- AWS Kinesis Streams
 - AWS DynamoDB Tables
 - AWS SNS Topics
 - AWS VPCs
