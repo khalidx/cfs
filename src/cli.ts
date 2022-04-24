@@ -22,6 +22,7 @@ import Alarms from './resources/alarms'
 import Canaries from './resources/canaries'
 import Instances from './resources/instances'
 import Parameters from './resources/parameters'
+import Elbs from './resources/elbs'
 
 import { startServer } from './services/server'
 
@@ -52,7 +53,8 @@ export async function cli (args: string[]) {
       Alarms.write(),
       Canaries.write(),
       Instances.write(),
-      Parameters.write()
+      Parameters.write(),
+      Elbs.write()
     ].map(operation => operation.catch(addError)))
     const duration = Math.ceil((Date.now() - started) / 1000)
     console.debug(`The operation took ${duration} ${duration === 1 ? 'second' : 'seconds'}.`)

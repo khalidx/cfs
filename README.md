@@ -121,6 +121,8 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS ACM Certificates
 - AWS CloudFront Distributions
 - AWS Route53 Hosted Zones
+- AWS ELB Classic Load Balancers
+- AWS ELB Application, Gateway, and Network Load Balancers
 - AWS Lambda Functions
 - AWS EC2 Instances
 - AWS SSM Parameters
