@@ -86,6 +86,7 @@ export async function cli (args: string[]) {
     if (!['string', 'number'].includes(typeof text)) throw new CliUserError('The text to search for must be a string or a number, like `cfs find "m5.large"`.')
     const textString = String(text).toLowerCase()
     const paths = await globby([ '.cfs/**/*', '!.cfs/.gitignore', '!.cfs/errors.log' ])
+    if (paths.length === 0) throw new CliUserError('No resources found in the `.cfs/` directory. Make sure to run the `cfs` command before running `cfs find`.')
     const matched = await Promise.all(paths.map(async path => {
       if (path.toLowerCase().includes(textString)) return { path, found: true }
       const content = await readFile(path, 'utf-8')
@@ -94,6 +95,7 @@ export async function cli (args: string[]) {
     matched.filter(match => match.found === true).forEach(match => console.log(match.path))
   } else if (command === 'browse') {
     const paths = await globby([ '.cfs/**/*', '!.cfs/.gitignore', '!.cfs/errors.log' ])
+    if (paths.length === 0) throw new CliUserError('No resources found in the `.cfs/` directory. Make sure to run the `cfs` command before running `cfs browse`.')
     const resources = await Promise.all(paths.map(async (path, index) => ({ id: index, path, content: await readFile(path, 'utf-8') })))
     await startServer(resources)
   } else if (command === 'clean') {
