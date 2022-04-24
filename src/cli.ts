@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import { blue, yellow, italic, bold } from 'chalk'
+import { blue, yellow, red, italic, bold } from 'chalk'
 import { ensureDir, writeFile, readFile, remove } from 'fs-extra'
 import globby from 'globby'
 import { serializeError } from 'serialize-error'
@@ -132,14 +132,13 @@ export function start (module: NodeModule) {
     cli(process.argv.slice(2)).catch(error => {
       if (error instanceof ZodError) {
         error.issues.forEach(({ code, path, message, ...rest }) => {
-          console.error('Error:', code, path.join('/'), message, JSON.stringify(rest))
+          console.error(red('Error:'), code, path.join('/'), message, JSON.stringify(rest))
         })
-        console.error('This is most likely a schema validation issue.')
-        console.error('Please open a Github issue.')
+        console.error('This is most likely a schema validation issue. Please open a Github issue.')
       } else if (error instanceof CliUserError) {
-        console.error('Error:', error.message)
+        console.error(red('Error:'), error.message)
       } else {
-        console.error('Error:', error)
+        console.error(red('Error:'), error)
       }
       process.exit(1)
     })
