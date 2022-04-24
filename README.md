@@ -126,6 +126,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS Lambda Functions
 - AWS EC2 Instances
 - AWS SSM Parameters
+- AWS CodePipeline Pipelines
 - AWS SQS Queues
 - AWS Regions
 - AWS CloudFormation Stacks

@@ -51,6 +51,7 @@
     "@aws-sdk/client-cloudformation": "^3.72.0",
     "@aws-sdk/client-cloudfront": "^3.72.0",
     "@aws-sdk/client-cloudwatch": "^3.72.0",
+    "@aws-sdk/client-codepipeline": "^3.76.0",
     "@aws-sdk/client-dynamodb": "^3.72.0",
     "@aws-sdk/client-ec2": "^3.72.0",
     "@aws-sdk/client-elastic-load-balancing": "^3.76.0",
