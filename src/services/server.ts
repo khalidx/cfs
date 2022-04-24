@@ -253,17 +253,59 @@ input#search:focus:-ms-placeholder {
   .json .key { color: #9575cd; }
 </style>
 
+<!-- CSS: Toggle Switch -->
+<style>
+input[type=checkbox] {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  -webkit-appearance: none;
+  -webkit-appearance: none;
+  background: #c6c6c6;
+  outline: none;
+  cursor: pointer;
+  border-radius: 20px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  transition: background 140ms linear;
+  vertical-align: middle;
+}
+input[type=checkbox]::before {
+  position: absolute;
+  content: "";
+  width: 20px;
+  height: 20px;
+  top: 0px;
+  left: 0px;
+  border-radius: 20px;
+  background-color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: left 140ms linear;
+}
+input[type=checkbox]:checked {
+  background: #03a9f4;
+}
+input[type=checkbox]:checked::before {
+  left: 22px;
+  background-color: #fff;
+}
+</style>
+
 <!-- HTML: Main HTML -->
 <section class="container">
     <header>
         <div class="column">
-      <img src="/img/logo" alt="cloudfs - An easy way to discover and manage your cloud like a local filesystem." width="350px">
-      <div class="search-container">
-        <input id="search" type="text" placeholder="Just start typing to search" autocomplete="off" autofocus />
-        <div class="search-subtitle">
-          <small id="count">${params.count} ${params.count === 1 ? 'resource' : 'resources'} discovered</small>
-        </div>
-      </div>
+          <img src="/img/logo" alt="cloudfs - An easy way to discover and manage your cloud like a local filesystem." width="350px">
+          <div class="search-container">
+            <input id="search" type="text" placeholder="Just start typing to search" autocomplete="off" autofocus />
+            <div class="search-subtitle">
+              <small id="count">${params.count} ${params.count === 1 ? 'resource' : 'resources'} discovered</small>
+            </div>
+          </div>
+          <div>
+            <label for="toggleJson">JSON</label>
+            <input id="toggleJson" name="toggleJson" type="checkbox" checked />
+          </div>
         </div>
     </header>
     <ul id="results" class="items"></ul>
@@ -326,6 +368,15 @@ input#search:focus:-ms-placeholder {
 
 <!-- Script: Main Script -->
 <script type="text/javascript">
+  var toggleJson = document.getElementById("toggleJson");
+  toggleJson.onchange = function (event) {
+    const jsonBlocks = Array.from(document.getElementsByClassName("json"));
+    if (event.currentTarget.checked) {
+      jsonBlocks.forEach(block => block.style.display = 'block');
+    } else {
+      jsonBlocks.forEach(block => block.style.display = 'none');
+    }
+  }
   var count = document.getElementById("count");
   var results = document.getElementById("results");
   var originalCount = count.innerHTML;
@@ -349,7 +400,9 @@ input#search:focus:-ms-placeholder {
         const result = document.createElement("div");
         result.innerHTML = createResultHtml(resource);
         results.appendChild(result);
-        results.appendChild(createHighlightedJsonElement(resource.content));
+        const json = createHighlightedJsonElement(resource.content);
+        if (!toggleJson.checked) json.style.display = 'none';
+        results.appendChild(json);
       });
     });
   };
