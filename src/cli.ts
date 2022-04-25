@@ -68,6 +68,7 @@ export async function cli (args: string[]) {
       let authenticationMissing = false
       let authenticationExpired = false
       let insufficientPermissions = false
+      let schemaError = false
       const insufficientPermissionsGenericExpression = /^(User: arn:aws:).+( is not authorized to perform: ).+( on resource: ).+( deny)/
       const log = JSON.stringify(errors.map((error: any) => {
         if (error.code === 'EAI_AGAIN' && error.syscall === 'getaddrinfo') {
@@ -89,6 +90,8 @@ export async function cli (args: string[]) {
           insufficientPermissions = true
         } else if (insufficientPermissionsGenericExpression.test(error.message) && typeof error.$metadata === 'object' && (error.$metadata.httpStatusCode === 400 || error.$metadata.httpStatusCode === 403)) {
           insufficientPermissions = true
+        } else if (error instanceof ZodError) {
+          schemaError = true
         }
         return serializeError(error)
       }), null, 2)
@@ -97,6 +100,7 @@ export async function cli (args: string[]) {
       if (authenticationMissing) throw new CliUserError('The operation completed, but failed due to missing AWS credentials. Please login and retry.')
       if (authenticationExpired) throw new CliUserError('The operation completed, but failed due to expired AWS credentials. Please login again and retry.')
       if (insufficientPermissions) throw new CliUserError('The operation completed, but failed due to insufficient permissions. Ignore this error, or login with a more privileged role and retry.')
+      if (schemaError) throw new CliUserError('The operation completed, but failed due to a schema validation issue. Please open a GitHub issue.')
       throw new CliUserError('The operation completed, but with some errors.')
     }
     console.log('Success')
@@ -153,12 +157,7 @@ export function logo () {
 export function start (module: NodeModule) {
   if (require.main === module) {
     cli(process.argv.slice(2)).catch(error => {
-      if (error instanceof ZodError) {
-        error.issues.forEach(({ code, path, message, ...rest }) => {
-          console.error(red('Error:'), code, path.join('/'), message, JSON.stringify(rest))
-        })
-        console.error('This is most likely a schema validation issue. Please open a Github issue.')
-      } else if (error instanceof CliUserError) {
+      if (error instanceof CliUserError) {
         console.error(red('Error:'), error.message, 'Check the .cfs/errors.log file for more information.')
       } else {
         console.error(red('Error:'), error)
