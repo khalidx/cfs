@@ -4,6 +4,7 @@ import { ensureDir, remove, writeFile } from 'fs-extra'
 import { resolve, dirname } from 'path'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Parameters {
@@ -16,11 +17,11 @@ export class Parameters {
       z.literal('String'),
       z.literal('StringList')
     ]),
-    KeyId: this.stringSchema.optional(),
+    KeyId: stringSchema.optional(),
     LastModifiedDate: z.date(),
-    LastModifiedUser: this.stringSchema,
-    Description: this.stringSchema.optional(),
-    AllowedPattern: this.stringSchema.optional(),
+    LastModifiedUser: stringSchema,
+    Description: stringSchema.optional(),
+    AllowedPattern: stringSchema.optional(),
     Version: z.number(),
     Tier: z.union([
       z.literal('Advanced'),
@@ -29,10 +30,10 @@ export class Parameters {
     ]),
     Policies: z.array(z.object({
       PolicyText: z.string().min(0).max(1000000),
-      PolicyType: this.stringSchema,
-      PolicyStatus: this.stringSchema
+      PolicyType: stringSchema,
+      PolicyStatus: stringSchema
     })),
-    DataType: this.stringSchema
+    DataType: stringSchema
   }).deepPartial().extend({
     Name: z.string().min(1).max(10000)
   })

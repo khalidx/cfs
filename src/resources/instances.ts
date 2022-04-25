@@ -3,14 +3,13 @@ import { EC2, paginateDescribeInstances } from '@aws-sdk/client-ec2'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Instances {
 
-  stringSchema = z.string().min(1).max(500)
-
   itemSchema = z.object({
-    ReservationId: this.stringSchema
+    ReservationId: stringSchema
   }).passthrough()
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000000)

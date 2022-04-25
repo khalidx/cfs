@@ -2,9 +2,9 @@ import { z } from 'zod'
 import { CloudFront, paginateListDistributions } from '@aws-sdk/client-cloudfront'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
-export class Distributions {
+import { stringSchema } from '../services/schemas'
 
-  stringSchema = z.string().min(1).max(500)
+export class Distributions {
 
   methodSchema = z.array(z.union([
     z.literal('DELETE'),
@@ -26,13 +26,13 @@ export class Distributions {
   trustedSignersSchema = z.object({
     Enabled: z.boolean(),
     Quantity: z.number(),
-    Items: z.array(this.stringSchema).optional()
+    Items: z.array(stringSchema).optional()
   })
 
   trustedKeyGroupsSchema = z.object({
     Enabled: z.boolean(),
     Quantity: z.number(),
-    Items: z.array(this.stringSchema).optional()
+    Items: z.array(stringSchema).optional()
   })
 
   viewerProtocolPolicySchema = z.union([
@@ -53,7 +53,7 @@ export class Distributions {
   lambdaFunctionAssociationsSchema = z.object({
     Quantity: z.number(),
     Items: z.array(z.object({
-      LambdaFunctionARN: this.stringSchema,
+      LambdaFunctionARN: stringSchema,
       EventType: this.eventTypeSchema,
       IncludeBody: z.boolean()
     })).optional()
@@ -62,7 +62,7 @@ export class Distributions {
   functionAssociationsSchema = z.object({
     Quantity: z.number(),
     Items: z.array(z.object({
-      FunctionARN: this.stringSchema,
+      FunctionARN: stringSchema,
       EventType: this.eventTypeSchema
     })).optional()
   })
@@ -77,43 +77,43 @@ export class Distributions {
       ]),
       WhitelistedNames: z.object({
         Quantity: z.number(),
-        Items: z.array(this.stringSchema)
+        Items: z.array(stringSchema)
       }).optional()
     }),
     Headers: z.object({
       Quantity: z.number(),
-      Items: z.array(this.stringSchema).optional()
+      Items: z.array(stringSchema).optional()
     }),
     QueryStringCacheKeys: z.object({
       Quantity: z.number(),
-      Items: z.array(this.stringSchema).optional()
+      Items: z.array(stringSchema).optional()
     })
   })
 
   itemSchema = z.object({
-    ARN: this.stringSchema,
-    Status: this.stringSchema,
+    ARN: stringSchema,
+    Status: stringSchema,
     LastModifiedTime: z.date(),
-    DomainName: this.stringSchema,
+    DomainName: stringSchema,
     Aliases: z.object({
       Quantity: z.number(),
-      Items: z.array(this.stringSchema)
+      Items: z.array(stringSchema)
     }),
     Origins: z.object({
       Quantity: z.number(),
       Items: z.array(z.object({
-        Id: this.stringSchema,
-        DomainName: this.stringSchema,
+        Id: stringSchema,
+        DomainName: stringSchema,
         OriginPath: z.string().min(0).max(1000),
         CustomHeaders: z.object({
           Quantity: z.number(),
           Items: z.array(z.object({
-            HeaderName: this.stringSchema,
-            HeaderValue: this.stringSchema
+            HeaderName: stringSchema,
+            HeaderValue: stringSchema
           })).optional()
         }),
         S3OriginConfig: z.object({
-          OriginAccessIdentity: this.stringSchema
+          OriginAccessIdentity: stringSchema
         }),
         CustomOriginConfig: z.object({
           HTTPPort: z.number(),
@@ -139,14 +139,14 @@ export class Distributions {
         ConnectionTimeout: z.number(),
         OriginShield: z.object({
           Enabled: z.boolean(),
-          OriginShieldRegion: this.stringSchema.optional()
+          OriginShieldRegion: stringSchema.optional()
         })
       }))
     }),
     OriginGroups: z.object({
       Quantity: z.number(),
       Items: z.array(z.object({
-        Id: this.stringSchema,
+        Id: stringSchema,
         FailoverCriteria: z.object({
           StatusCodes: z.object({
             Quantity: z.number(),
@@ -156,13 +156,13 @@ export class Distributions {
         Members: z.object({
           Quantity: z.number(),
           Items: z.array(z.object({
-            OriginId: this.stringSchema
+            OriginId: stringSchema
           }))
         })
       })).optional()
     }),
     DefaultCacheBehavior: z.object({
-      TargetOriginId: this.stringSchema,
+      TargetOriginId: stringSchema,
       TrustedSigners: this.trustedSignersSchema,
       TrustedKeyGroups: this.trustedKeyGroupsSchema,
       ViewerProtocolPolicy: this.viewerProtocolPolicySchema,
@@ -172,10 +172,10 @@ export class Distributions {
       LambdaFunctionAssociations: this.lambdaFunctionAssociationsSchema,
       FunctionAssociations: this.functionAssociationsSchema,
       FieldLevelEncryptionId: z.string().min(0).max(500),
-      RealtimeLogConfigArn: this.stringSchema.optional(),
-      CachePolicyId: this.stringSchema.optional(),
-      OriginRequestPolicyId: this.stringSchema.optional(),
-      ResponseHeadersPolicyId: this.stringSchema.optional(),
+      RealtimeLogConfigArn: stringSchema.optional(),
+      CachePolicyId: stringSchema.optional(),
+      OriginRequestPolicyId: stringSchema.optional(),
+      ResponseHeadersPolicyId: stringSchema.optional(),
       ForwardedValues: this.forwardedValuesSchema,
       MinTTL: z.number(),
       DefaultTTL: z.number(),
@@ -184,8 +184,8 @@ export class Distributions {
     CacheBehaviors: z.object({
       Quantity: z.number(),
       Items: z.array(z.object({
-        PathPattern: this.stringSchema,
-        TargetOriginId: this.stringSchema,
+        PathPattern: stringSchema,
+        TargetOriginId: stringSchema,
         TrustedSigners: this.trustedSignersSchema,
         TrustedKeyGroups: this.trustedKeyGroupsSchema,
         ViewerProtocolPolicy: this.viewerProtocolPolicySchema,
@@ -194,11 +194,11 @@ export class Distributions {
         Compress: z.boolean(),
         LambdaFunctionAssociations: this.lambdaFunctionAssociationsSchema,
         FunctionAssociations: this.functionAssociationsSchema,
-        FieldLevelEncryptionId: this.stringSchema,
-        RealtimeLogConfigArn: this.stringSchema,
-        CachePolicyId: this.stringSchema,
-        OriginRequestPolicyId: this.stringSchema,
-        ResponseHeadersPolicyId: this.stringSchema,
+        FieldLevelEncryptionId: stringSchema,
+        RealtimeLogConfigArn: stringSchema,
+        CachePolicyId: stringSchema,
+        OriginRequestPolicyId: stringSchema,
+        ResponseHeadersPolicyId: stringSchema,
         ForwardedValues: this.forwardedValuesSchema,
         MinTTL: z.number(),
         DefaultTTL: z.number(),
@@ -209,12 +209,12 @@ export class Distributions {
       Quantity: z.number(),
       Items: z.array(z.object({
         ErrorCode: z.number(),
-        ResponsePagePath: this.stringSchema,
-        ResponseCode: this.stringSchema,
+        ResponsePagePath: stringSchema,
+        ResponseCode: stringSchema,
         ErrorCachingMinTTL: z.number()
       }))
     }),
-    Comment: this.stringSchema,
+    Comment: stringSchema,
     PriceClass: z.union([
       z.literal('PriceClass_100'),
       z.literal('PriceClass_200'),
@@ -223,8 +223,8 @@ export class Distributions {
     Enabled: z.boolean(),
     ViewerCertificate: z.object({
       CloudFrontDefaultCertificate: z.boolean(),
-      IAMCertificateId: this.stringSchema.optional(),
-      ACMCertificateArn: this.stringSchema,
+      IAMCertificateId: stringSchema.optional(),
+      ACMCertificateArn: stringSchema,
       SSLSupportMethod: z.union([
         z.literal('sni-only'),
         z.literal('static-ip'),
@@ -254,7 +254,7 @@ export class Distributions {
           z.literal('whitelist')
         ]),
         Quantity: z.number(),
-        Items: z.array(this.stringSchema).optional()
+        Items: z.array(stringSchema).optional()
       })
     }),
     WebACLId: z.string().min(0).max(500),
@@ -264,7 +264,7 @@ export class Distributions {
     ]),
     IsIPV6Enabled: z.boolean(),
     AliasICPRecordals: z.array(z.object({
-      CNAME: this.stringSchema,
+      CNAME: stringSchema,
       ICPRecordalStatus: z.union([
         z.literal('APPROVED'),
         z.literal('PENDING'),
@@ -272,7 +272,7 @@ export class Distributions {
       ])
     }))
   }).deepPartial().extend({
-    Id: this.stringSchema
+    Id: stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

@@ -4,18 +4,17 @@ import { ElasticLoadBalancingV2, paginateDescribeLoadBalancers as paginateDescri
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Elbs {
 
-  stringSchema = z.string().min(1).max(1000)
-
   elbItemSchema = z.object({
-    LoadBalancerName: this.stringSchema
+    LoadBalancerName: stringSchema
   }).passthrough()
 
   elbv2ItemSchema = z.object({
-    LoadBalancerName: this.stringSchema
+    LoadBalancerName: stringSchema
   }).passthrough()
 
   elbCollectionSchema = z.array(this.elbItemSchema).min(0).max(10000)

@@ -3,14 +3,13 @@ import { CodePipeline, paginateListPipelines } from '@aws-sdk/client-codepipelin
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Pipelines {
 
-  stringSchema = z.string().min(1).max(1000)
-
   itemSchema = z.object({
-    name: this.stringSchema
+    name: stringSchema
   }).passthrough()
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

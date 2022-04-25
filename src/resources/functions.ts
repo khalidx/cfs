@@ -3,53 +3,52 @@ import { Lambda, paginateListFunctions } from '@aws-sdk/client-lambda'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Functions {
 
-  stringSchema = z.string().min(1).max(500)
-
   itemSchema = z.object({
-    FunctionArn: this.stringSchema,
-    Runtime: this.stringSchema,
-    Role: this.stringSchema,
-    Handler: this.stringSchema,
+    FunctionArn: stringSchema,
+    Runtime: stringSchema,
+    Role: stringSchema,
+    Handler: stringSchema,
     CodeSize: z.number(),
     Description: z.string().min(0).max(1000),
     Timeout: z.number(),
     MemorySize: z.number(),
-    LastModified: this.stringSchema,
-    CodeSha256: this.stringSchema,
-    Version: this.stringSchema,
+    LastModified: stringSchema,
+    CodeSha256: stringSchema,
+    Version: stringSchema,
     VpcConfig: z.object({
-      SubnetIds: z.array(this.stringSchema),
-      SecurityGroupIds: z.array(this.stringSchema),
-      VpcId: this.stringSchema
+      SubnetIds: z.array(stringSchema),
+      SecurityGroupIds: z.array(stringSchema),
+      VpcId: stringSchema
     }).optional(),
     DeadLetterConfig: z.object({
-      TargetArn: this.stringSchema
+      TargetArn: stringSchema
     }).optional(),
     Environment: z.object({
       Variables: z.object({}).passthrough(),
       Error: z.object({
-        ErrorCode: this.stringSchema,
-        Message: this.stringSchema
+        ErrorCode: stringSchema,
+        Message: stringSchema
       }).optional()
     }).optional(),
-    KMSKeyArn: this.stringSchema.optional(),
+    KMSKeyArn: stringSchema.optional(),
     TracingConfig: z.object({
       Mode: z.union([
         z.literal('Active'),
         z.literal('PassThrough')
       ])
     }),
-    MasterArn: this.stringSchema.optional(),
-    RevisionId: this.stringSchema,
+    MasterArn: stringSchema.optional(),
+    RevisionId: stringSchema,
     Layers: z.array(z.object({
-      Arn: this.stringSchema,
+      Arn: stringSchema,
       CodeSize: z.number(),
-      SigningProfileVersionArn: this.stringSchema.optional(),
-      SigningJobArn: this.stringSchema.optional()
+      SigningProfileVersionArn: stringSchema.optional(),
+      SigningJobArn: stringSchema.optional()
     })).optional(),
     State: z.union([
       z.literal('Active'),
@@ -57,7 +56,7 @@ export class Functions {
       z.literal('Inactive'),
       z.literal('Pending')
     ]).optional(),
-    StateReason: this.stringSchema.optional(),
+    StateReason: stringSchema.optional(),
     StateReasonCode: z.union([
       z.literal('Creating'),
       z.literal('EniLimitExceeded'),
@@ -78,7 +77,7 @@ export class Functions {
       z.literal('InProgress'),
       z.literal('Successful')
     ]).optional(),
-    LastUpdateStatusReason: this.stringSchema.optional(),
+    LastUpdateStatusReason: stringSchema.optional(),
     LastUpdateStatusReasonCode: z.union([
       z.literal('EniLimitExceeded'),
       z.literal('ImageAccessDenied'),
@@ -92,8 +91,8 @@ export class Functions {
       z.literal('SubnetOutOfIPAddresses')
     ]).optional(),
     FileSystemConfigs: z.object({
-      Arn: this.stringSchema,
-      LocalMountPath: this.stringSchema
+      Arn: stringSchema,
+      LocalMountPath: stringSchema
     }).optional(),
     PackageType: z.union([
       z.literal('Image'),
@@ -101,17 +100,17 @@ export class Functions {
     ]),
     ImageConfigResponse: z.object({
       ImageConfig: z.object({
-        EntryPoint: z.array(this.stringSchema),
-        Command: z.array(this.stringSchema),
-        WorkingDirectory: this.stringSchema
+        EntryPoint: z.array(stringSchema),
+        Command: z.array(stringSchema),
+        WorkingDirectory: stringSchema
       }),
       Error: z.object({
-        ErrorCode: this.stringSchema,
-        Message: this.stringSchema
+        ErrorCode: stringSchema,
+        Message: stringSchema
       })
     }).optional(),
-    SigningProfileVersionArn: this.stringSchema.optional(),
-    SigningJobArn: this.stringSchema.optional(),
+    SigningProfileVersionArn: stringSchema.optional(),
+    SigningJobArn: stringSchema.optional(),
     Architectures: z.array(z.union([
       z.literal('arm64'),
       z.literal('x86_64')
@@ -120,7 +119,7 @@ export class Functions {
       Size: z.number()
     })
   }).deepPartial().extend({
-    FunctionName: this.stringSchema
+    FunctionName: stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

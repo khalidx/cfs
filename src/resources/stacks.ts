@@ -3,29 +3,28 @@ import { CloudFormation, paginateDescribeStacks } from '@aws-sdk/client-cloudfor
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Stacks {
 
-  stringSchema = z.string().min(1).max(500)
-
   itemSchema = z.object({
-    StackName: this.stringSchema,
-    ChangeSetId: this.stringSchema.optional(),
-    Description: this.stringSchema.optional(),
+    StackName: stringSchema,
+    ChangeSetId: stringSchema.optional(),
+    Description: stringSchema.optional(),
     Parameters: z.array(z.object({
-      ParameterKey: this.stringSchema,
+      ParameterKey: stringSchema,
       ParameterValue: z.string().min(0).max(10000),
       UsePreviousValue: z.boolean().optional(),
-      ResolvedValue: this.stringSchema.optional()
+      ResolvedValue: stringSchema.optional()
     })),
     CreationTime: z.date(),
     DeletionTime: z.date().optional(),
     LastUpdatedTime: z.date().optional(),
     RollbackConfiguration: z.object({
       RollbackTriggers: z.array(z.object({
-        Arn: this.stringSchema,
-        Type: this.stringSchema
+        Arn: stringSchema,
+        Type: stringSchema
       })).optional(),
       MonitoringTimeInMinutes: z.number().optional()
     }),
@@ -54,9 +53,9 @@ export class Stacks {
       z.literal('UPDATE_ROLLBACK_FAILED'),
       z.literal('UPDATE_ROLLBACK_IN_PROGRESS')
     ]),
-    StackStatusReason: this.stringSchema.optional(),
+    StackStatusReason: stringSchema.optional(),
     DisableRollback: z.boolean(),
-    NotificationARNs: z.array(this.stringSchema),
+    NotificationARNs: z.array(stringSchema),
     TimeoutInMinutes: z.number().optional(),
     Capabilities: z.array(z.union([
       z.literal('CAPABILITY_AUTO_EXPAND'),
@@ -64,19 +63,19 @@ export class Stacks {
       z.literal('CAPABILITY_NAMED_IAM')
     ])),
     Outputs: z.array(z.object({
-      OutputKey: this.stringSchema,
-      OutputValue: this.stringSchema,
-      Description: this.stringSchema.optional(),
-      ExportName: this.stringSchema.optional()
+      OutputKey: stringSchema,
+      OutputValue: stringSchema,
+      Description: stringSchema.optional(),
+      ExportName: stringSchema.optional()
     })).optional(),
-    RoleARN: this.stringSchema.optional(),
+    RoleARN: stringSchema.optional(),
     Tags: z.array(z.object({
-      Key: this.stringSchema,
-      Value: this.stringSchema
+      Key: stringSchema,
+      Value: stringSchema
     })),
     EnableTerminationProtection: z.boolean().optional(),
-    ParentId: this.stringSchema.optional(),
-    RootId: this.stringSchema.optional(),
+    ParentId: stringSchema.optional(),
+    RootId: stringSchema.optional(),
     DriftInformation: z.object({
       StackDriftStatus: z.union([
         z.literal('DRIFTED'),
@@ -87,7 +86,7 @@ export class Stacks {
       LastCheckTimestamp: z.date().optional()
     })
   }).deepPartial().extend({
-    StackId: this.stringSchema
+    StackId: stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

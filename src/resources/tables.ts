@@ -3,13 +3,12 @@ import { DynamoDB, paginateListTables } from '@aws-sdk/client-dynamodb'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Tables {
 
-  stringSchema = z.string().min(1).max(500)
-
-  collectionSchema = z.array(this.stringSchema).min(0).max(10000)
+  collectionSchema = z.array(stringSchema).min(0).max(10000)
 
   async listTables (params: { region: string }) {
     const dynamoDb = new DynamoDB({ region: params.region })

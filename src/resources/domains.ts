@@ -2,24 +2,24 @@ import { z } from 'zod'
 import { Route53, paginateListHostedZones } from '@aws-sdk/client-route-53'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
+import { stringSchema } from '../services/schemas'
+
 export class Domains {
 
-  stringSchema = z.string().min(1).max(500)
-
   itemSchema = z.object({
-    Name: this.stringSchema,
-    CallerReference: this.stringSchema,
+    Name: stringSchema,
+    CallerReference: stringSchema,
     Config: z.object({
-      Comment: this.stringSchema,
+      Comment: stringSchema,
       PrivateZone: z.boolean()
     }),
     ResourceRecordSetCount: z.number(),
     LinkedService: z.object({
-      ServicePrincipal: this.stringSchema,
-      Description: this.stringSchema
+      ServicePrincipal: stringSchema,
+      Description: stringSchema
     }).optional()
   }).deepPartial().extend({
-    Id: this.stringSchema
+    Id: stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

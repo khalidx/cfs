@@ -2,12 +2,12 @@ import { z } from 'zod'
 import { S3 } from '@aws-sdk/client-s3'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
+import { stringSchema } from '../services/schemas'
+
 export class Buckets {
 
-  stringSchema = z.string().min(1).max(500)
-
   itemSchema = z.object({
-    Name: this.stringSchema,
+    Name: stringSchema,
     CreationDate: z.date()
   })
 

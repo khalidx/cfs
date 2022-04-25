@@ -4,19 +4,18 @@ import { ApiGatewayV2 } from '@aws-sdk/client-apigatewayv2'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Apis {
 
-  stringSchema = z.string().min(1).max(500)
-
   apiItemSchema = z.object({
-    name: this.stringSchema,
-    description: this.stringSchema,
+    name: stringSchema,
+    description: stringSchema,
     createdDate: z.date(),
-    version: this.stringSchema,
-    warnings: z.array(this.stringSchema),
-    binaryMediaTypes: z.array(this.stringSchema),
+    version: stringSchema,
+    warnings: z.array(stringSchema),
+    binaryMediaTypes: z.array(stringSchema),
     minimumCompressionSize: z.number(),
     apiKeySource: z.union([
       z.literal('AUTHORIZER'),
@@ -28,43 +27,43 @@ export class Apis {
         z.literal('PRIVATE'),
         z.literal('REGIONAL')
       ])),
-      vpcEndpointIds: z.array(this.stringSchema)
+      vpcEndpointIds: z.array(stringSchema)
     }),
-    policy: this.stringSchema,
+    policy: stringSchema,
     tags: z.object({}).passthrough(),
     disableExecuteApiEndpoint: z.boolean()
   }).deepPartial().extend({
-    id: this.stringSchema
+    id: stringSchema
   })
 
   apiv2ItemSchema = z.object({
-    ApiEndpoint: this.stringSchema,
+    ApiEndpoint: stringSchema,
     ApiGatewayManaged: z.boolean().optional(),
-    ApiKeySelectionExpression: this.stringSchema,
+    ApiKeySelectionExpression: stringSchema,
     CorsConfiguration: z.object({
       AllowCredentials: z.boolean(),
-      AllowHeaders: z.array(this.stringSchema),
-      AllowMethods: z.array(this.stringSchema),
-      AllowOrigins: z.array(this.stringSchema),
-      ExposeHeaders: z.array(this.stringSchema),
+      AllowHeaders: z.array(stringSchema),
+      AllowMethods: z.array(stringSchema),
+      AllowOrigins: z.array(stringSchema),
+      ExposeHeaders: z.array(stringSchema),
       MaxAge: z.number()
     }).optional(),
     CreatedDate: z.date(),
-    Description: this.stringSchema.optional(),
+    Description: stringSchema.optional(),
     DisableSchemaValidation: z.boolean().optional(),
     DisableExecuteApiEndpoint: z.boolean(),
-    ImportInfo: z.array(this.stringSchema).optional(),
-    Name: this.stringSchema,
+    ImportInfo: z.array(stringSchema).optional(),
+    Name: stringSchema,
     ProtocolType: z.union([
       z.literal('HTTP'),
       z.literal('WEBSOCKET')
     ]),
-    RouteSelectionExpression: this.stringSchema,
+    RouteSelectionExpression: stringSchema,
     Tags: z.object({}).passthrough(),
-    Version: this.stringSchema.optional(),
-    Warnings: z.array(this.stringSchema).optional()
+    Version: stringSchema.optional(),
+    Warnings: z.array(stringSchema).optional()
   }).deepPartial().extend({
-    ApiId: this.stringSchema
+    ApiId: stringSchema
   })
 
   apiCollectionSchema = z.array(this.apiItemSchema).min(0).max(10000)

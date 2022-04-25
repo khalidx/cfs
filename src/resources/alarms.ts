@@ -3,15 +3,14 @@ import { CloudWatch, paginateDescribeAlarms } from '@aws-sdk/client-cloudwatch'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Alarms {
 
-  stringSchema = z.string().min(1).max(500)
-
   dimensionsSchema = z.array(z.object({
-    Name: this.stringSchema,
-    Value: this.stringSchema
+    Name: stringSchema,
+    Value: stringSchema
   }))
 
   unitSchema = z.union([
@@ -51,19 +50,19 @@ export class Alarms {
   ])
 
   metricAlarmsItemSchema = z.object({
-    AlarmName: this.stringSchema,
-    AlarmDescription: this.stringSchema,
+    AlarmName: stringSchema,
+    AlarmDescription: stringSchema,
     AlarmConfigurationUpdatedTimestamp: z.date(),
     ActionsEnabled: z.boolean(),
-    OKActions: z.array(this.stringSchema),
-    AlarmActions: z.array(this.stringSchema),
-    InsufficientDataActions: z.array(this.stringSchema),
+    OKActions: z.array(stringSchema),
+    AlarmActions: z.array(stringSchema),
+    InsufficientDataActions: z.array(stringSchema),
     StateValue: this.stateValueSchema,
-    StateReason: this.stringSchema,
-    StateReasonData: this.stringSchema,
+    StateReason: stringSchema,
+    StateReasonData: stringSchema,
     StateUpdatedTimestamp: z.date(),
-    MetricName: this.stringSchema,
-    Namespace: this.stringSchema,
+    MetricName: stringSchema,
+    Namespace: stringSchema,
     Statistic: z.union([
       z.literal('Average'),
       z.literal('Maximum'),
@@ -71,7 +70,7 @@ export class Alarms {
       z.literal('SampleCount'),
       z.literal('Sum')
     ]),
-    ExtendedStatistic: this.stringSchema,
+    ExtendedStatistic: stringSchema,
     Dimensions: this.dimensionsSchema,
     Period: z.number(),
     Unit: this.unitSchema,
@@ -87,48 +86,48 @@ export class Alarms {
       z.literal('LessThanOrEqualToThreshold'),
       z.literal('LessThanThreshold')
     ]),
-    TreatMissingData: this.stringSchema,
-    EvaluateLowSampleCountPercentile: this.stringSchema,
+    TreatMissingData: stringSchema,
+    EvaluateLowSampleCountPercentile: stringSchema,
     Metrics: z.array(z.object({
-      Id: this.stringSchema,
+      Id: stringSchema,
       MetricStat: z.object({
         Metric: z.object({
-          Namespace: this.stringSchema,
-          MetricName: this.stringSchema,
+          Namespace: stringSchema,
+          MetricName: stringSchema,
           Dimensions: this.dimensionsSchema
         }),
         Period: z.number(),
-        Stat: this.stringSchema,
+        Stat: stringSchema,
         Unit: this.unitSchema
       }),
-      Expression: this.stringSchema,
-      Label: this.stringSchema,
+      Expression: stringSchema,
+      Label: stringSchema,
       ReturnData: z.boolean(),
       Period: z.number(),
-      AccountId: this.stringSchema
+      AccountId: stringSchema
     })),
-    ThresholdMetricId: this.stringSchema
+    ThresholdMetricId: stringSchema
   }).deepPartial().extend({
-    AlarmArn: this.stringSchema
+    AlarmArn: stringSchema
   })
 
   metricAlarmsCollectionSchema = z.array(this.metricAlarmsItemSchema).min(0).max(10000)
   
   compositeAlarmsItemSchema = z.object({
     ActionsEnabled: z.boolean(),
-    AlarmActions: z.array(this.stringSchema),
+    AlarmActions: z.array(stringSchema),
     AlarmConfigurationUpdatedTimestamp: z.date(),
-    AlarmDescription: this.stringSchema,
-    AlarmName: this.stringSchema,
-    AlarmRule: this.stringSchema,
-    InsufficientDataActions: z.array(this.stringSchema),
-    OKActions: z.array(this.stringSchema),
-    StateReason: this.stringSchema,
-    StateReasonData: this.stringSchema,
+    AlarmDescription: stringSchema,
+    AlarmName: stringSchema,
+    AlarmRule: stringSchema,
+    InsufficientDataActions: z.array(stringSchema),
+    OKActions: z.array(stringSchema),
+    StateReason: stringSchema,
+    StateReasonData: stringSchema,
     StateUpdatedTimestamp: z.date(),
     StateValue: this.stateValueSchema
   }).deepPartial().extend({
-    AlarmArn: this.stringSchema
+    AlarmArn: stringSchema
   })
 
   compositeAlarmsCollectionSchema = z.array(this.compositeAlarmsItemSchema).min(0).max(10000)

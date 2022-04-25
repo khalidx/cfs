@@ -3,11 +3,10 @@ import { EC2, paginateDescribeVpcs } from '@aws-sdk/client-ec2'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Vpcs {
-
-  stringSchema = z.string().min(1).max(500)
 
   vpcCidrBlockStateSchema = z.object({
     State: z.union([
@@ -18,13 +17,13 @@ export class Vpcs {
       z.literal('failed'),
       z.literal('failing')
     ]),
-    StatusMessage: this.stringSchema.optional()
+    StatusMessage: stringSchema.optional()
   })
 
   itemSchema = z.object({
-    CidrBlock: this.stringSchema,
-    DhcpOptionsId: this.stringSchema,
-    OwnerId: this.stringSchema,
+    CidrBlock: stringSchema,
+    DhcpOptionsId: stringSchema,
+    OwnerId: stringSchema,
     IsDefault: z.boolean(),
     State: z.union([
       z.literal('available'),
@@ -36,23 +35,23 @@ export class Vpcs {
       z.literal('host')
     ]),
     CidrBlockAssociationSet: z.array(z.object({
-      AssociationId: this.stringSchema,
-      CidrBlock: this.stringSchema,
+      AssociationId: stringSchema,
+      CidrBlock: stringSchema,
       CidrBlockState: this.vpcCidrBlockStateSchema
     })),
     Ipv6CidrBlockAssociationSet: z.array(z.object({
-      AssociationId: this.stringSchema,
-      Ipv6CidrBlock: this.stringSchema,
+      AssociationId: stringSchema,
+      Ipv6CidrBlock: stringSchema,
       Ipv6CidrBlockState: this.vpcCidrBlockStateSchema,
-      NetworkBorderGroup: this.stringSchema,
-      Ipv6Pool: this.stringSchema
+      NetworkBorderGroup: stringSchema,
+      Ipv6Pool: stringSchema
     })).optional(),
     Tags: z.array(z.object({
       Key: z.string().min(1).max(500),
       Value: z.string().min(1).max(500)
     })).optional()
   }).deepPartial().extend({
-    VpcId: this.stringSchema
+    VpcId: stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(1).max(10000)

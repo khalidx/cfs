@@ -3,15 +3,14 @@ import { ACM, paginateListCertificates } from '@aws-sdk/client-acm'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Certificates {
 
-  stringSchema = z.string().min(1).max(500)
-
   itemSchema = z.object({
-    CertificateArn: this.stringSchema,
-    DomainName: this.stringSchema
+    CertificateArn: stringSchema,
+    DomainName: stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

@@ -3,13 +3,12 @@ import { SQS, paginateListQueues } from '@aws-sdk/client-sqs'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Queues {
 
-  stringSchema = z.string().min(1).max(500)
-
-  collectionSchema = z.array(this.stringSchema).min(0).max(10000)
+  collectionSchema = z.array(stringSchema).min(0).max(10000)
 
   async listQueues (params: { region: string }) {
     const sqs = new SQS({ region: params.region })

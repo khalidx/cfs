@@ -3,13 +3,12 @@ import { Kinesis } from '@aws-sdk/client-kinesis'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Streams {
-
-  stringSchema = z.string().min(1).max(1000)
   
-  collectionSchema = z.array(this.stringSchema).min(0).max(10000)
+  collectionSchema = z.array(stringSchema).min(0).max(10000)
 
   async listStreams (params: { region: string }) {
     const kinesis = new Kinesis({ region: params.region })

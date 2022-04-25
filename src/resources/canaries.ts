@@ -3,21 +3,20 @@ import { Synthetics, paginateDescribeCanaries } from '@aws-sdk/client-synthetics
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
+import { stringSchema } from '../services/schemas'
 import { addError } from '../services/errors'
 
 export class Canaries {
 
-  stringSchema = z.string().min(1).max(500)
-
   itemSchema = z.object({
-    Name: this.stringSchema,
+    Name: stringSchema,
     Code: z.object({
-      SourceLocationArn: this.stringSchema,
-      Handler: this.stringSchema
+      SourceLocationArn: stringSchema,
+      Handler: stringSchema
     }),
-    ExecutionRoleArn: this.stringSchema,
+    ExecutionRoleArn: stringSchema,
     Schedule: z.object({
-      Expression: this.stringSchema,
+      Expression: stringSchema,
       DurationInSeconds: z.number()
     }),
     RunConfig: z.object({
@@ -39,7 +38,7 @@ export class Canaries {
         z.literal('STOPPING'),
         z.literal('UPDATING')
       ]),
-      StateReason: this.stringSchema,
+      StateReason: stringSchema,
       StateReasonCode: z.literal('INVALID_PERMISSIONS')
     }),
     Timeline: z.object({
@@ -48,20 +47,20 @@ export class Canaries {
       LastStarted: z.date(),
       LastStopped: z.date()
     }),
-    ArtifactS3Location: this.stringSchema,
-    EngineArn: this.stringSchema,
-    RuntimeVersion: this.stringSchema,
+    ArtifactS3Location: stringSchema,
+    EngineArn: stringSchema,
+    RuntimeVersion: stringSchema,
     VpcConfig: z.object({
-      VpcId: this.stringSchema,
-      SubnetIds: z.array(this.stringSchema),
-      SecurityGroupIds: z.array(this.stringSchema)
+      VpcId: stringSchema,
+      SubnetIds: z.array(stringSchema),
+      SecurityGroupIds: z.array(stringSchema)
     }),
     VisualReference: z.object({
       BaseScreenshots: z.array(z.object({
-        ScreenshotName: this.stringSchema,
-        IgnoreCoordinates: z.array(this.stringSchema)
+        ScreenshotName: stringSchema,
+        IgnoreCoordinates: z.array(stringSchema)
       })),
-      BaseCanaryRunId: this.stringSchema
+      BaseCanaryRunId: stringSchema
     }),
     Tags: z.object({}).passthrough(),
     ArtifactConfig: z.object({
@@ -70,11 +69,11 @@ export class Canaries {
           z.literal('SSE_KMS'),
           z.literal('SSE_S3')
         ]),
-        KmsKeyArn: this.stringSchema
+        KmsKeyArn: stringSchema
       })
     })
   }).deepPartial().extend({
-    Id: this.stringSchema
+    Id: stringSchema
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)
