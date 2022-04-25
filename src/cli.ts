@@ -97,7 +97,7 @@ export async function cli (args: string[]) {
       if (authenticationMissing) throw new CliUserError('The operation completed, but failed due to missing AWS credentials. Please login and retry.')
       if (authenticationExpired) throw new CliUserError('The operation completed, but failed due to expired AWS credentials. Please login again and retry.')
       if (insufficientPermissions) throw new CliUserError('The operation completed, but failed due to insufficient permissions. Ignore this error, or login with a more privileged role and retry.')
-      throw new CliUserError('The operation completed, but with some errors. Check the .cfs/errors.log file for more information.')
+      throw new CliUserError('The operation completed, but with some errors.')
     }
     console.log('Success')
   } else if (command === 'ls' || command === 'list') {
@@ -159,7 +159,7 @@ export function start (module: NodeModule) {
         })
         console.error('This is most likely a schema validation issue. Please open a Github issue.')
       } else if (error instanceof CliUserError) {
-        console.error(red('Error:'), error.message)
+        console.error(red('Error:'), error.message, 'Check the .cfs/errors.log file for more information.')
       } else {
         console.error(red('Error:'), error)
       }
