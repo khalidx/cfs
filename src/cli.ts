@@ -64,10 +64,13 @@ export async function cli (args: string[]) {
     console.debug(`The operation took ${duration} ${duration === 1 ? 'second' : 'seconds'}.`)
     const errors = getErrors()
     if (errors.length > 0) {
+      let noInternetAccess = false
       let authenticationMissing = false
       let authenticationExpired = false
       const log = JSON.stringify(errors.map((error: any) => {
-        if (error.name = 'CredentialsProviderError' && error.message === 'Could not load credentials from any providers') {
+        if (error.code === 'EAI_AGAIN' && error.syscall === 'getaddrinfo') {
+          noInternetAccess = true
+        } else if (error.name = 'CredentialsProviderError' && error.message === 'Could not load credentials from any providers') {
           authenticationMissing = true
         } else if (error.Code === 'RequestExpired' || error.Code === 'ExpiredToken') {
           authenticationExpired = true
@@ -78,6 +81,7 @@ export async function cli (args: string[]) {
         return serializeError(error)
       }), null, 2)
       await writeFile('.cfs/errors.log', log)
+      if (noInternetAccess) throw new CliUserError('The operation completed, but failed due to an issue with internet access. Please check your connection, proxy, or VPN settings.')
       if (authenticationMissing) throw new CliUserError('The operation completed, but failed due to missing AWS credentials. Please login and retry.')
       if (authenticationExpired) throw new CliUserError('The operation completed, but failed due to expired AWS credentials. Please login again and retry.')
       throw new CliUserError('The operation completed, but with some errors. Check the .cfs/errors.log file for more information.')
