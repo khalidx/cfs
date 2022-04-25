@@ -9,7 +9,7 @@ import { addError } from '../services/errors'
 export class Topics {
 
   itemSchema = z.object({
-    TopicArn: stringSchema
+    TopicArn: stringSchema.refine(arn => arn.split(':').length === 6)
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)
@@ -44,7 +44,7 @@ export class Topics {
           await ensureDir(`.cfs/topics/${encodeURIComponent(entry.region.RegionName)}/`)
         }
         for (const topic of topics) {
-          await writeFile(`.cfs/topics/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(topic.TopicArn.substring(topic.TopicArn.indexOf(':topic/') + ':topic/'.length))}`, JSON.stringify(topic, null, 2))
+          await writeFile(`.cfs/topics/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(topic.TopicArn.substring(topic.TopicArn.lastIndexOf(':') + ':'.length))}`, JSON.stringify(topic, null, 2))
         }
       }
     }).map(promise => promise.catch(addError)))

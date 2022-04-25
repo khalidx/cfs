@@ -86,7 +86,7 @@ export class Stacks {
       LastCheckTimestamp: z.date().optional()
     })
   }).deepPartial().extend({
-    StackId: stringSchema
+    StackId: stringSchema.refine(id => id.split(':stack/').length === 2)
   })
 
   collectionSchema = z.array(this.itemSchema).min(0).max(10000)

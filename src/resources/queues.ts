@@ -8,7 +8,7 @@ import { addError } from '../services/errors'
 
 export class Queues {
 
-  collectionSchema = z.array(stringSchema).min(0).max(10000)
+  collectionSchema = z.array(stringSchema.refine(url => url.split('/').length === 5)).min(0).max(10000)
 
   async listQueues (params: { region: string }) {
     const sqs = new SQS({ region: params.region })
@@ -40,7 +40,7 @@ export class Queues {
           await ensureDir(`.cfs/queues/${encodeURIComponent(entry.region.RegionName)}/`)
         }
         for (const queue of queues) {
-          await writeFile(`.cfs/queues/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(queue)}`, JSON.stringify(queue, null, 2))
+          await writeFile(`.cfs/queues/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(queue.substring(queue.lastIndexOf('/') + '/'.length))}`, JSON.stringify(queue, null, 2))
         }
       }
     }).map(promise => promise.catch(addError)))

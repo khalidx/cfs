@@ -127,7 +127,7 @@ export class Alarms {
     StateUpdatedTimestamp: z.date(),
     StateValue: this.stateValueSchema
   }).deepPartial().extend({
-    AlarmArn: stringSchema
+    AlarmArn: stringSchema.refine(arn => arn.split(':alarm:').length === 2)
   })
 
   compositeAlarmsCollectionSchema = z.array(this.compositeAlarmsItemSchema).min(0).max(10000)
@@ -162,14 +162,14 @@ export class Alarms {
           await ensureDir(`.cfs/alarms/metric/${encodeURIComponent(entry.region.RegionName)}/`)
         }
         for (const alarm of metricAlarms) {
-          await writeFile(`.cfs/alarms/metric/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(alarm.AlarmArn.substring(alarm.AlarmArn.indexOf(':alarm/') + ':alarm/'.length))}`, JSON.stringify(alarm, null, 2))
+          await writeFile(`.cfs/alarms/metric/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(alarm.AlarmArn.substring(alarm.AlarmArn.indexOf(':alarm:') + ':alarm:'.length))}`, JSON.stringify(alarm, null, 2))
         }
         const compositeAlarms = await this.compositeAlarmsCollectionSchema.parseAsync(result.CompositeAlarms)
         if (compositeAlarms.length > 0) {
           await ensureDir(`.cfs/alarms/composite/${encodeURIComponent(entry.region.RegionName)}/`)
         }
         for (const alarm of compositeAlarms) {
-          await writeFile(`.cfs/alarms/composite/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(alarm.AlarmArn.substring(alarm.AlarmArn.indexOf(':alarm/') + ':alarm/'.length))}`, JSON.stringify(alarm, null, 2))
+          await writeFile(`.cfs/alarms/composite/${encodeURIComponent(entry.region.RegionName)}/${encodeURIComponent(alarm.AlarmArn.substring(alarm.AlarmArn.indexOf(':alarm:') + ':alarm:'.length))}`, JSON.stringify(alarm, null, 2))
         }
       }
     }).map(promise => promise.catch(addError)))

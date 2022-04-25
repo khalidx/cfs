@@ -9,7 +9,7 @@ import { addError } from '../services/errors'
 export class Certificates {
 
   itemSchema = z.object({
-    CertificateArn: stringSchema,
+    CertificateArn: stringSchema.refine(arn => arn.split(':certificate/').length === 2),
     DomainName: stringSchema
   })
 
