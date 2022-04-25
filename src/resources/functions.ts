@@ -23,7 +23,7 @@ export class Functions {
     VpcConfig: z.object({
       SubnetIds: z.array(stringSchema),
       SecurityGroupIds: z.array(stringSchema),
-      VpcId: stringSchema
+      VpcId: z.string().min(0).max(10000)
     }).optional(),
     DeadLetterConfig: z.object({
       TargetArn: stringSchema

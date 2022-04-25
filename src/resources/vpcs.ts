@@ -54,7 +54,7 @@ export class Vpcs {
     VpcId: stringSchema
   })
 
-  collectionSchema = z.array(this.itemSchema).min(1).max(10000)
+  collectionSchema = z.array(this.itemSchema).min(0).max(10000)
 
   async describeVpcs (params: { region: string }) {
     const ec2 = new EC2({ region: params.region })

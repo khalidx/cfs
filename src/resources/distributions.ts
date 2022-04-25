@@ -294,7 +294,7 @@ export class Distributions {
     await this.clear()
     await ensureDir('.cfs/distributions/')
     for await (const result of await this.list()) {
-      const distributions = await this.collectionSchema.parseAsync(result.DistributionList?.Items)
+      const distributions = await this.collectionSchema.parseAsync(result.DistributionList?.Items || [])
       for (const distribution of distributions) {
         await writeFile(`.cfs/distributions/${encodeURIComponent(distribution.Id)}`, JSON.stringify(distribution, null, 2))
       }

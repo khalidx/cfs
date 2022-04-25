@@ -10,7 +10,7 @@ export class Domains {
     Name: stringSchema,
     CallerReference: stringSchema,
     Config: z.object({
-      Comment: stringSchema,
+      Comment: z.string().min(0).max(10000),
       PrivateZone: z.boolean()
     }),
     ResourceRecordSetCount: z.number(),
