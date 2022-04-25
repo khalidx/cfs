@@ -186,6 +186,24 @@ header .search-subtitle {
   text-align: right;
 }
 
+.show-pointer {
+  cursor: pointer;
+}
+
+.no-text-selection {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.has-text-selection {
+  user-select: text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+  -ms-user-select: text;
+}
+
 ul.items li.item {
   display: flex;
   align-items: center;
@@ -327,10 +345,10 @@ input[type=checkbox]:checked::before {
 <script type="text/javascript">
   function createResultHtml (params) {
     return \`
-      <li class="item">
+      <li class="item show-pointer no-text-selection">
         <div class="result">
           <img class="icon" src="/icons/\${params.path.split('/')[1]}" alt="Amazon Virtual Private Cloud (VPC)">
-          <div class="name">\${params.path}</div>
+          <div class="name has-text-selection">\${params.path}</div>
         </div>
       </li>
     \`
@@ -389,6 +407,10 @@ input[type=checkbox]:checked::before {
       jsonBlocks.forEach(block => block.style.display = 'none');
     }
   }
+  function toggleJsonOnItemClick (event) {
+    var json = document.getElementById(event.currentTarget.id + "-json");
+    json.style.display = (json.style.display === "none") ? "block" : "none";
+  }
   var count = document.getElementById("count");
   var results = document.getElementById("results");
   var originalCount = count.innerHTML;
@@ -410,9 +432,12 @@ input[type=checkbox]:checked::before {
       resources.forEach(resource => {
         if (!isSameRequest(value)) return;
         const result = document.createElement("div");
+        result.id = "resource-" + resource.id;
         result.innerHTML = createResultHtml(resource);
+        result.onclick = toggleJsonOnItemClick;
         results.appendChild(result);
         const json = createHighlightedJsonElement(resource.content);
+        json.id = "resource-" + resource.id + "-json";
         if (!toggleJson.checked) json.style.display = 'none';
         results.appendChild(json);
       });
