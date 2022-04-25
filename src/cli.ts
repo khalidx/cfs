@@ -67,6 +67,8 @@ export async function cli (args: string[]) {
       let noInternetAccess = false
       let authenticationMissing = false
       let authenticationExpired = false
+      let insufficientPermissions = false
+      const insufficientPermissionsGenericExpression = /^(User: arn:aws:).+( is not authorized to perform: ).+( on resource: ).+( deny)/
       const log = JSON.stringify(errors.map((error: any) => {
         if (error.code === 'EAI_AGAIN' && error.syscall === 'getaddrinfo') {
           noInternetAccess = true
@@ -77,6 +79,16 @@ export async function cli (args: string[]) {
           if (error['Token-0']) {
             delete error['Token-0']
           }
+        } else if (error.Code === 'AccessDenied' && typeof error.$metadata === 'object' && error.$metadata.httpStatusCode === 403) {
+          insufficientPermissions = true
+        } else if (error.Code === 'AuthorizationError' && typeof error.$metadata === 'object' && error.$metadata.httpStatusCode === 403) {
+          insufficientPermissions = true
+        } else if (error.Code = 'UnauthorizedOperation' && typeof error.$metadata === 'object' && error.$metadata.httpStatusCode === 403) {
+          insufficientPermissions = true
+        } else if (error.__type === 'AccessDeniedException' && typeof error.$metadata === 'object' && error.$metadata.httpStatusCode === 400) {
+          insufficientPermissions = true
+        } else if (insufficientPermissionsGenericExpression.test(error.message) && typeof error.$metadata === 'object' && (error.$metadata.httpStatusCode === 400 || error.$metadata.httpStatusCode === 403)) {
+          insufficientPermissions = true
         }
         return serializeError(error)
       }), null, 2)
@@ -84,6 +96,7 @@ export async function cli (args: string[]) {
       if (noInternetAccess) throw new CliUserError('The operation completed, but failed due to an issue with internet access. Please check your connection, proxy, or VPN settings.')
       if (authenticationMissing) throw new CliUserError('The operation completed, but failed due to missing AWS credentials. Please login and retry.')
       if (authenticationExpired) throw new CliUserError('The operation completed, but failed due to expired AWS credentials. Please login again and retry.')
+      if (insufficientPermissions) throw new CliUserError('The operation completed, but failed due to insufficient permissions. Ignore this error, or login with a more privileged role and retry.')
       throw new CliUserError('The operation completed, but with some errors. Check the .cfs/errors.log file for more information.')
     }
     console.log('Success')
