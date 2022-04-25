@@ -51,6 +51,10 @@ export async function startServer (resources: Array<{ id: number, path: string, 
       res.contentType('image/svg+xml')
       return res.send(svgs.ResAmazonRoute53HostedZone48LightSvg())
     }
+    if (type === 'elbs') {
+      res.contentType('image/svg+xml')
+      return res.send(svgs.ArchElasticLoadBalancing48Svg())
+    }
     if (type === 'functions') {
       res.contentType('image/svg+xml')
       return res.send(svgs.ResAWSLambdaLambdaFunction48LightSvg())
@@ -63,6 +67,10 @@ export async function startServer (resources: Array<{ id: number, path: string, 
       res.contentType('image/svg+xml')
       return res.send(svgs.ResAWSSystemsManagerParameterStore48LightSvg())
     }
+    if (type === 'pipelines') {
+      res.contentType('image/svg+xml')
+      return res.send(svgs.ArchAWSCodePipeline48Svg()) 
+    }
     if (type === 'queues') {
       res.contentType('image/svg+xml')
       return res.send(svgs.ArchAmazonSimpleQueueService48Svg())
@@ -74,6 +82,10 @@ export async function startServer (resources: Array<{ id: number, path: string, 
     if (type === 'stacks') {
       res.contentType('image/svg+xml')
       return res.send(svgs.ResAWSCloudFormationStack48LightSvg())
+    }
+    if (type === 'streams') {
+      res.contentType('image/svg+xml')
+      return res.send(svgs.ArchAmazonKinesis48Svg()) 
     }
     if (type === 'tables') {
       res.contentType('image/svg+xml')
