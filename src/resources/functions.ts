@@ -3,7 +3,7 @@ import { Lambda, paginateListFunctions } from '@aws-sdk/client-lambda'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
-import { addError } from '../errors'
+import { addError } from '../services/errors'
 
 export class Functions {
 

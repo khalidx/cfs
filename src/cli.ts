@@ -4,7 +4,7 @@ import { ensureDir, writeFile, readFile, remove } from 'fs-extra'
 import globby from 'globby'
 import { serializeError } from 'serialize-error'
 
-import { ZodError, CliUserError, addError, getErrors } from './errors'
+import { ZodError, CliUserError, addError, getErrors } from './services/errors'
 
 import Regions from './resources/regions'
 import Vpcs from './resources/vpcs'

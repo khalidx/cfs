@@ -3,7 +3,7 @@ import { DynamoDB, paginateListTables } from '@aws-sdk/client-dynamodb'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
-import { addError } from '../errors'
+import { addError } from '../services/errors'
 
 export class Tables {
 

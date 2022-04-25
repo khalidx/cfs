@@ -4,7 +4,7 @@ import { ensureDir, remove, writeFile } from 'fs-extra'
 import { resolve, dirname } from 'path'
 
 import Regions from './regions'
-import { addError } from '../errors'
+import { addError } from '../services/errors'
 
 export class Parameters {
 

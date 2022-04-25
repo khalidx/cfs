@@ -3,7 +3,7 @@ import { CodePipeline, paginateListPipelines } from '@aws-sdk/client-codepipelin
 import { ensureDir, remove, writeFile } from 'fs-extra'
 
 import Regions from './regions'
-import { addError } from '../errors'
+import { addError } from '../services/errors'
 
 export class Pipelines {
 
