@@ -7,7 +7,7 @@ export async function startServer (params: { resources: Array<{ id: number, path
   const app = express()
   app.get('/', (_req, res, _next) => {
     res.contentType('text/html')
-    res.send(indexHtml({ count: params.resources.length }))
+    return res.send(indexHtml({ count: params.resources.length }))
   })
   app.get('/search', (req, res, _next) => {
     const query = req.query['q']
@@ -19,7 +19,7 @@ export async function startServer (params: { resources: Array<{ id: number, path
   })
   app.get('/img/logo', (_req, res, _next) => {
     res.contentType('image/svg+xml')
-    res.send(svgs.CloudfsLogoSvg())
+    return res.send(svgs.CloudfsLogoSvg())
   })
   app.get('/img/external-link', (_req, res, _next) => {
     res.contentType('image/svg+xml')
