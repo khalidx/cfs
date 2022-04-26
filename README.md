@@ -12,6 +12,7 @@ The swiss army knife for *finding any resource* in your AWS account.
 [![GitHub license badge](https://img.shields.io/github/license/khalidx/cfs.svg?style=flat-square)](https://github.com/khalidx/cfs/blob/main/LICENSE)
 [![GitHub last commit badge](https://img.shields.io/github/last-commit/khalidx/cfs.svg?style=flat-square)](https://github.com/khalidx/cfs/commits/main)
 [![GitHub Actions build badge](https://github.com/khalidx/cfs/actions/workflows/build.yml/badge.svg)](https://github.com/khalidx/cfs/actions/workflows/build.yml)
+[![Snyk known vulnerabilities](https://snyk.io/test/github/khalidx/cfs/badge.svg)](https://snyk.io/test/github/khalidx/cfs)
 
 ## ⏬ install
 
