@@ -21,6 +21,10 @@ export async function startServer (resources: Array<{ id: number, path: string, 
     res.contentType('image/svg+xml')
     res.send(svgs.CloudfsLogoSvg())
   })
+  app.get('/img/external-link', (_req, res, _next) => {
+    res.contentType('image/svg+xml')
+    return res.send(svgs.HeroiconsExternalLinkOutlineSvg())
+  })
   app.get('/icons/:type', (req, res, _next) => {
     const type = req.params.type
     if (type === 'alarms') {
