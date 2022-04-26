@@ -2,9 +2,8 @@ import minimist from 'minimist'
 import { blue, yellow, red, italic, bold } from 'chalk'
 import { ensureDir, writeFile, readFile, remove } from 'fs-extra'
 import globby from 'globby'
-import { serializeError } from 'serialize-error'
 
-import { ZodError, CliUserError, addError, getErrors } from './services/errors'
+import { CliUserError, addError, getFormattedErrors } from './services/errors'
 
 import Regions from './resources/regions'
 import Vpcs from './resources/vpcs'
@@ -62,45 +61,14 @@ export async function cli (args: string[]) {
     ].map(operation => operation.catch(addError)))
     const duration = Math.ceil((Date.now() - started) / 1000)
     console.debug(`The operation took ${duration} ${duration === 1 ? 'second' : 'seconds'}.`)
-    const errors = getErrors()
-    if (errors.length > 0) {
-      let noInternetAccess = false
-      let authenticationMissing = false
-      let authenticationExpired = false
-      let insufficientPermissions = false
-      let schemaError = false
-      const insufficientPermissionsGenericExpression = /^(User: arn:aws:).+( is not authorized to perform: ).+( on resource: ).+( deny)/
-      const log = JSON.stringify(errors.map((error: any) => {
-        if (error.code === 'EAI_AGAIN' && error.syscall === 'getaddrinfo') {
-          noInternetAccess = true
-        } else if (error.name = 'CredentialsProviderError' && error.message === 'Could not load credentials from any providers') {
-          authenticationMissing = true
-        } else if (error.Code === 'RequestExpired' || error.Code === 'ExpiredToken') {
-          authenticationExpired = true
-          if (error['Token-0']) {
-            delete error['Token-0']
-          }
-        } else if (error.Code === 'AccessDenied' && typeof error.$metadata === 'object' && error.$metadata.httpStatusCode === 403) {
-          insufficientPermissions = true
-        } else if (error.Code === 'AuthorizationError' && typeof error.$metadata === 'object' && error.$metadata.httpStatusCode === 403) {
-          insufficientPermissions = true
-        } else if (error.Code = 'UnauthorizedOperation' && typeof error.$metadata === 'object' && error.$metadata.httpStatusCode === 403) {
-          insufficientPermissions = true
-        } else if (error.__type === 'AccessDeniedException' && typeof error.$metadata === 'object' && error.$metadata.httpStatusCode === 400) {
-          insufficientPermissions = true
-        } else if (insufficientPermissionsGenericExpression.test(error.message) && typeof error.$metadata === 'object' && (error.$metadata.httpStatusCode === 400 || error.$metadata.httpStatusCode === 403)) {
-          insufficientPermissions = true
-        } else if (error instanceof ZodError) {
-          schemaError = true
-        }
-        return serializeError(error)
-      }), null, 2)
-      await writeFile('.cfs/errors.log', log)
-      if (noInternetAccess) throw new CliUserError('The operation completed, but failed due to an issue with internet access. Please check your connection, proxy, or VPN settings.')
-      if (authenticationMissing) throw new CliUserError('The operation completed, but failed due to missing AWS credentials. Please login and retry.')
-      if (authenticationExpired) throw new CliUserError('The operation completed, but failed due to expired AWS credentials. Please login again and retry.')
-      if (insufficientPermissions) throw new CliUserError('The operation completed, but failed due to insufficient permissions. Ignore this error, or login with a more privileged role and retry.')
-      if (schemaError) throw new CliUserError('The operation completed, but failed due to a schema validation issue. Please open a GitHub issue.')
+    const formatted = getFormattedErrors()
+    if (formatted.errors.length > 0) {
+      await writeFile('.cfs/errors.log', JSON.stringify(formatted, null, 2))
+      if (formatted.categories.NoInternetAccess) throw new CliUserError('The operation completed, but failed due to an issue with internet access. Please check your connection, proxy, or VPN settings.')
+      if (formatted.categories.AuthenticationMissing) throw new CliUserError('The operation completed, but failed due to missing AWS credentials. Please login and retry.')
+      if (formatted.categories.AuthenticationExpired) throw new CliUserError('The operation completed, but failed due to expired AWS credentials. Please login again and retry.')
+      if (formatted.categories.InsufficientPermissions) throw new CliUserError('The operation completed, but failed due to insufficient permissions. Ignore this error, or login with a more privileged role and retry.')
+      if (formatted.categories.SchemaValidationFailed) throw new CliUserError('The operation completed, but failed due to a schema validation issue. Please open a GitHub issue.')
       throw new CliUserError('The operation completed, but with some errors.')
     }
     console.log('Success')
@@ -125,6 +93,12 @@ export async function cli (args: string[]) {
     if (paths.length === 0) throw new CliUserError('No resources found in the `.cfs/` directory. Make sure to run the `cfs` command before running `cfs browse`.')
     const resources = await Promise.all(paths.map(async (path, index) => ({ id: index, path, content: await readFile(path, 'utf-8') })))
     await startServer(resources)
+  } else if (command === 'errors') {
+    const log = await readFile('.cfs/errors.log', 'utf-8') 
+    const formatted = JSON.parse(log)
+    Object.entries(formatted.categories).forEach(entry => {
+      console.log(yellow(entry[1]), blue(entry[0]), 'errors')
+    })
   } else if (command === 'clean') {
     await remove('.cfs/')
   } else if (command === 'help') {
@@ -137,6 +111,7 @@ export async function cli (args: string[]) {
     console.log(`  cfs ${blue('ls')}           ${bold('Lists the names of all resource files to the console.')}`)
     console.log(`  cfs ${blue('find')} ${yellow('<text>')}  ${bold('Search for text across all resource file names and contents.')}`)
     console.log(`  cfs ${blue('browse')}       ${bold('Opens the browser for exploring resources.')}`)
+    console.log(`  cfs ${blue('errors')}       Outputs the categories of all errors encountered during discovery.`)
     console.log(`  cfs ${blue('clean')}        Deletes the \`.cfs/\` directory.`)
     console.log(`  cfs ${blue('help')}         Outputs this help message.`)
     console.log()

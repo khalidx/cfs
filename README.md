@@ -44,6 +44,7 @@ cfs
 cfs ls
 cfs find
 cfs browse
+cfs errors
 cfs clean
 cfs help
 ```
@@ -108,6 +109,14 @@ This is the same as deleting the `.cfs/` directory yourself with `rm -rf .cfs/`.
 
 (coming soon)
 
+## troubleshooting
+
+If you encounter any errors while [discovering resources](#discovering-resources) using the `cfs` command, there are three things you can do right off the bat.
+
+1. Check the `.cfs/errors.log` file
+2. Run the `cfs errors` command, which will output the categories of all errors encountered during resource discovery
+3. Submit a GitHub issue ([we close issues pretty fast!](#support))
+
 ## supported resources
 
 The following cloud resources are [currently supported](./src/resources/):
@@ -155,4 +164,4 @@ After cloning, run `npm link` to make the `cfs` CLI available. You can now edit 
 
 ## support
 
-🚀 Over the **next week** (April 18-25 2022), all Github issues submitted will receive an 8-hour turnaround time, for a good beta testing experience!
+🚀 Over the **next week** (April 18-25 2022), all GitHub issues submitted will receive an 8-hour turnaround time, for a good beta testing experience!
