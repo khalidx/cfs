@@ -3,17 +3,17 @@ import open from 'open'
 
 import * as svgs from './svgs'
 
-export async function startServer (resources: Array<{ id: number, path: string, content: string }>) {
+export async function startServer (params: { resources: Array<{ id: number, path: string, content: string }>, open: boolean }) {
   const app = express()
   app.get('/', (_req, res, _next) => {
     res.contentType('text/html')
-    res.send(indexHtml({ count: resources.length }))
+    res.send(indexHtml({ count: params.resources.length }))
   })
   app.get('/search', (req, res, _next) => {
     const query = req.query['q']
     if (query && typeof query === 'string' && query.length > 0) {
       const lowercase = query.toLowerCase()
-      return res.json(resources.filter(resource => resource.path.toLowerCase().includes(lowercase) || resource.content.toLowerCase().includes(lowercase)))
+      return res.json(params.resources.filter(resource => resource.path.toLowerCase().includes(lowercase) || resource.content.toLowerCase().includes(lowercase)))
     }
     return res.status(400).send('400 - Bad Request')
   })
@@ -113,7 +113,9 @@ export async function startServer (resources: Array<{ id: number, path: string, 
       resolve()
     })
   })
-  await open(url)
+  if (params.open) {
+    await open(url)
+  }
 }
 
 export function indexHtml (params: { count: number }) {

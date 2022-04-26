@@ -89,10 +89,11 @@ export async function cli (args: string[]) {
     }))
     matched.filter(match => match.found === true).forEach(match => console.log(match.path))
   } else if (command === 'browse') {
+    const open = argv['open'] === 'false' ? false : true
     const paths = await globby([ '.cfs/**/*', '!.cfs/.gitignore', '!.cfs/errors.log' ])
     if (paths.length === 0) throw new CliUserError('No resources found in the `.cfs/` directory. Make sure to run the `cfs` command before running `cfs browse`.')
     const resources = await Promise.all(paths.map(async (path, index) => ({ id: index, path, content: await readFile(path, 'utf-8') })))
-    await startServer(resources)
+    await startServer({ resources, open })
   } else if (command === 'errors') {
     const log = await readFile('.cfs/errors.log', 'utf-8') 
     const formatted = JSON.parse(log)
