@@ -1,6 +1,6 @@
 {
   "name": "@khalidx/cfs",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "An easy way to discover and manage your cloud like a local filesystem.",
   "main": "dist/index.js",
   "bin": "bin/cli.js",
