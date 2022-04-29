@@ -20,7 +20,7 @@ The swiss army knife for *finding any resource* in your AWS account.
 npm install -g @khalidx/cfs
 ```
 
-Also, a native binary is available for [Windows](https://github.com/khalidx/cfs/releases/download/v0.7.0/cfs-win.exe), [Mac](https://github.com/khalidx/cfs/releases/download/v0.7.0/cfs-macos), and [Linux](https://github.com/khalidx/cfs/releases/download/v0.7.0/cfs-linux).
+Also, a native binary is available for [Windows](https://github.com/khalidx/cfs/releases/download/v0.8.0/cfs-win.exe), [Mac](https://github.com/khalidx/cfs/releases/download/v0.8.0/cfs-macos), and [Linux](https://github.com/khalidx/cfs/releases/download/v0.8.0/cfs-linux).
 
 Need help using this application? [Read this](#support).
 
