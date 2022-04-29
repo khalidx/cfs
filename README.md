@@ -40,7 +40,28 @@ When you are searching for something specific, and would rather have all your re
 
 `cfs` exports all your cloud resources as JSON files.
 
-## cli
+## table of contents
+
+- [cfs](#cfs)
+  - [⏬ install](#-install)
+  - [introduction](#introduction)
+  - [table of contents](#table-of-contents)
+  - [usage](#usage)
+    - [cli](#cli)
+    - [discovering resources](#discovering-resources)
+    - [updating resources](#updating-resources)
+    - [troubleshooting](#troubleshooting)
+    - [aws credentials](#aws-credentials)
+    - [supported resources](#supported-resources)
+  - [plugins](#plugins)
+    - [plugin resolution](#plugin-resolution)
+    - [plugins file](#plugins-file)
+  - [developers](#developers)
+  - [support](#support)
+
+## usage
+
+### cli
 
 ```sh
 cfs
@@ -54,7 +75,7 @@ cfs help
 
 > Make sure you're [logged in to AWS](#aws-credentials) before running the commands above.
 
-## discovering resources
+### discovering resources
 
 ```sh
 cfs
@@ -108,11 +129,11 @@ cfs clean
 
 This is the same as deleting the `.cfs/` directory yourself with `rm -rf .cfs/`.
 
-## updating resources
+### updating resources
 
 (coming soon)
 
-## troubleshooting
+### troubleshooting
 
 If you encounter any errors while [discovering resources](#discovering-resources) using the `cfs` command, there are three things you can do right off the bat.
 
@@ -120,7 +141,13 @@ If you encounter any errors while [discovering resources](#discovering-resources
 2. Run the `cfs errors` command, which will output the categories of all errors encountered during resource discovery
 3. Submit a GitHub issue ([we close issues pretty fast!](#support))
 
-## supported resources
+### aws credentials
+
+Make sure you're logged in to AWS, and have the corresponding credentials file or environment variables set. Otherwise, `cfs` won't be able to query your cloud resources.
+
+Here's a quick guide from AWS on [configuring your credentials with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
+
+### supported resources
 
 The following cloud resources are [currently supported](./src/resources/):
 
@@ -204,12 +231,6 @@ The plugins file contains a simple syntax. Here are some examples:
     plugins:
     - ls -al .cfs/
     ```
-
-## aws credentials
-
-Make sure you're logged in to AWS, and have the corresponding credentials file or environment variables set. Otherwise, `cfs` won't be able to query your cloud resources.
-
-Here's a quick guide from AWS on [configuring your credentials with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
 
 ## developers
 
