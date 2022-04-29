@@ -151,7 +151,59 @@ More resources are coming soon, with the goal of covering all resources listed o
 
 ## plugins
 
-(coming soon)
+`cfs` now supports plugins! What can you do with plugins?
+
+Do something after resources are discovered and saved, like:
+
+- [warning if any S3 buckets are public](.cfs/plugins/examples/no-public-buckets.ts)
+- enriching the resource with information from another API, like [fetching more information about queues](.cfs/plugins/examples/enriched-queue-info.ts)
+
+Plugins are defined in `.cfs/plugins/plugins.yaml`, and can be written in any language and can run any application. Check the [example plugins](.cfs/plugins/examples/) directory in this repository for ideas.
+
+Plugins run in the current directory by default, the same directory that contains the `.cfs/` subdirectory.
+
+### plugin resolution
+
+The plugins feature is enabled or disabled based on the following rules:
+
+- The presence of the `CFS_DISABLE_PLUGINS` environment variable
+- The presence of a `.cfs/plugins/plugins.json` file
+- The presence of a `.cfs/plugins/plugins.yaml` file
+- The presence of a `.cfs/plugins/plugins.yml` file
+- The presence of a `disabled` flag in the plugins file
+
+Individual plugins run based on the order they are defined in the plugins file, and on the following rules:
+
+- The presense of the `disabled` flag for the specific plugin in the plugins file
+- If a plugin ends with `.js`, it runs with `node`
+- If a plugin ends with `.ts`, it runs with `npx ts-node`
+- Otherwise, it is started with a `bash` command, enabling you to run any CLI command, process, or script
+
+### plugins file
+
+The plugins file contains a simple syntax. Here are some examples:
+
+- a TypeScript plugin, defined inline
+
+    ```yaml
+    plugins:
+    - ./examples/no-public-buckets.ts
+    ```
+
+- the same TypeScript plugin, defined as an object, and marked as disabled
+
+    ```yaml
+    plugins:
+    - disabled: true
+      run: ./examples/no-public-buckets.ts
+      description: Logs the names of any buckets that are public
+    ```
+- a plugin that spawns a shell command, defined inline
+
+    ```yaml
+    plugins:
+    - ls -al .cfs/
+    ```
 
 ## aws credentials
 
