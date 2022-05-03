@@ -204,7 +204,7 @@ Individual plugins run based on the order they are defined in the plugins file, 
 - The presense of the `disabled` flag for the specific plugin in the plugins file
 - If a plugin ends with `.js`, it runs with `node`
 - If a plugin ends with `.ts`, it runs with `npx ts-node`
-- Otherwise, it is started with a `bash` command, enabling you to run any CLI command, process, or script
+- Otherwise, it is started with a `sh` command, enabling you to run any CLI command, process, or script
 
 ### plugins file
 

@@ -64,5 +64,5 @@ async function runTypescript (run: z.infer<typeof pluginSchema>['run']) {
 async function runScript (run: z.infer<typeof pluginSchema>['run'], index: number) {
   const scriptPath = `.cfs/plugins/.run/plugin-${index}.sh`
   await writeFile(scriptPath, run)
-  spawnSync('bash', [scriptPath], { stdio: 'inherit' })
+  spawnSync('sh', [scriptPath], { stdio: 'inherit' })
 }
