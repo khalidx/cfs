@@ -67,6 +67,7 @@ async function runScript (run: z.infer<typeof pluginSchema>['run'], index: numbe
   const scriptPath = `.cfs/plugins/.run/plugin-${index}.sh`
   await writeFile(scriptPath, run)
   await runSomething('sh', [scriptPath])
+  await remove(scriptPath)
 }
 
 async function runSomething (command: string, args: string[]) {
