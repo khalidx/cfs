@@ -3,7 +3,7 @@ import { blue, yellow, red, italic, bold } from 'chalk'
 import { ensureDir, writeFile, readFile, remove } from 'fs-extra'
 import globby from 'globby'
 
-import { CliUserError, addError, getFormattedErrors } from './services/errors'
+import { CliUserError, CliPluginError, addError, getFormattedErrors } from './services/errors'
 
 import Regions from './resources/regions'
 import Vpcs from './resources/vpcs'
@@ -139,6 +139,8 @@ export function start (module: NodeModule) {
     cli(process.argv.slice(2)).catch(error => {
       if (error instanceof CliUserError) {
         console.error(red('Error:'), error.message, 'Check the .cfs/errors.log file for more information.')
+      } else if (error instanceof CliPluginError) {
+        console.error(red('Error:'), error.message)
       } else {
         console.error(red('Error:'), error)
       }

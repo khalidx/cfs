@@ -1,8 +1,10 @@
-import { spawnSync } from 'child_process'
+import { spawn } from 'child_process'
 import { join } from 'path'
 import { pathExists, readFile, remove, ensureDir, writeFile } from 'fs-extra'
 import YAML from 'yaml'
 import { z } from 'zod'
+
+import { CliPluginError } from './errors'
 
 const pluginSchema = z.union([
   z.object({
@@ -39,7 +41,7 @@ async function runPlugins (pluginsFilePath: string) {
     const plugin = plugins[index]
     if (typeof plugin === 'object') await runPlugin({ ...plugin, type: 'object' }, index)
     else if (typeof plugin === 'string') await runPlugin({ type: 'inline', run: plugin }, index)
-    else throw new Error('Invalid plugin file format')
+    else throw new CliPluginError('Invalid plugin file format')
   }
 }
 
@@ -54,15 +56,24 @@ async function runPlugin (plugin: z.infer<typeof pluginSchema>, index: number) {
 }
 
 async function runJavascript (run: z.infer<typeof pluginSchema>['run']) {
-  spawnSync('node', [join('.cfs/plugins/', run)], { stdio: 'inherit' })
+  await runSomething('node', [join('.cfs/plugins/', run)])
 }
 
 async function runTypescript (run: z.infer<typeof pluginSchema>['run']) {
-  spawnSync('npx', ['ts-node', join('.cfs/plugins/', run)], { stdio: 'inherit' })
+  await runSomething('npx', ['ts-node', join('.cfs/plugins/', run)])
 }
 
 async function runScript (run: z.infer<typeof pluginSchema>['run'], index: number) {
   const scriptPath = `.cfs/plugins/.run/plugin-${index}.sh`
   await writeFile(scriptPath, run)
-  spawnSync('sh', [scriptPath], { stdio: 'inherit' })
+  await runSomething('sh', [scriptPath])
+}
+
+async function runSomething (command: string, args: string[]) {
+  return new Promise<void>((resolve, reject) => {
+    spawn(command, args, { stdio: 'inherit' }).on('exit', (code) => {
+      if (code === 0) resolve()
+      else reject(new CliPluginError('The plugin failed.'))
+    })
+  })
 }

@@ -7,6 +7,12 @@ export class CliUserError extends Error {
   }
 }
 
+export class CliPluginError extends Error {
+  constructor(message: string) {
+    super(message)
+  }
+}
+
 const errors: Array<unknown> = []
 export function addError (error: unknown) {
   errors.push(error)
