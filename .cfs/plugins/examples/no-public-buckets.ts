@@ -43,6 +43,6 @@ export async function start () {
 if (require.main === module) {
   start().catch(error => {
     console.error(error)
-    process.exit(1)
+    process.exitCode = 1
   })
 }
