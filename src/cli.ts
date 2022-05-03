@@ -104,7 +104,8 @@ export async function cli (args: string[]) {
       console.log(yellow(entry[1]), blue(entry[0]), 'errors')
     })
   } else if (command === 'clean') {
-    await remove('.cfs/')
+    const paths = await globby([ '.cfs/**/*', '.cfs/.gitignore', '!.cfs/plugins/' ], { deep: 1, onlyFiles: false })
+    await Promise.all(paths.map(path => remove(path)))
   } else if (command === 'help') {
     console.log(blue(logo()))
     console.log('version   ', yellow(`v${require('../package.json').version}`))
