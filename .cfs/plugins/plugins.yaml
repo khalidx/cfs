@@ -3,4 +3,3 @@ plugins:
   description: Log the current user and account
   run: aws sts get-caller-identity
 - ./examples/no-public-buckets.ts
-- ./examples/enriched-queue-info.ts
