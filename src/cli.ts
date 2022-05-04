@@ -25,6 +25,7 @@ import Elbs from './resources/elbs'
 import Pipelines from './resources/pipelines'
 import Streams from './resources/streams'
 import Roles from './resources/roles'
+import Users from './resources/users'
 
 import { startServer } from './services/server'
 import { startPlugins } from './services/plugins'
@@ -60,7 +61,8 @@ export async function cli (args: string[]) {
       Elbs.write(),
       Pipelines.write(),
       Streams.write(),
-      Roles.write()
+      Roles.write(),
+      Users.write()
     ].map(operation => operation.catch(addError)))
     const duration = Math.ceil((Date.now() - started) / 1000)
     console.debug(`The operation took ${duration} ${duration === 1 ? 'second' : 'seconds'}.`)

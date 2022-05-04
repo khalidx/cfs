@@ -173,6 +173,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS Kinesis Streams
 - AWS DynamoDB Tables
 - AWS SNS Topics
+- AWS IAM Users
 - AWS VPCs
 
 More resources are coming soon, with the goal of covering all resources listed on the [AWS resource and property types reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) page.
