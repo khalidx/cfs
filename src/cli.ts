@@ -126,7 +126,7 @@ export async function cli (args: string[]) {
     console.log(italic('commands'))
     console.log(`  cfs              ${bold('Outputs all discovered resources to `.cfs/` in the current directory.')}`)
     console.log(`  cfs ${blue('ls')}           ${bold('Lists the names of all resource files to the console.')}`)
-    console.log(`  cfs ${blue('find')} ${yellow('<text>')}  ${bold('Search for text across all resource file names and contents.')}`)
+    console.log(`  cfs ${blue('find')} ${yellow('<text>')}  ${bold('Searches for text across all resource file names and contents.')}`)
     console.log(`  cfs ${blue('browse')}       ${bold('Opens the browser for exploring resources.')}`)
     console.log(`  cfs ${blue('plugins')}      ${bold('Runs all configured plugins.')}`)
     console.log(`  cfs ${blue('errors')}       Outputs the categories of all errors encountered during discovery.`)
