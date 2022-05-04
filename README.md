@@ -171,6 +171,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS SQS Queues
 - AWS Regions
 - AWS IAM Roles
+- AWS Secrets Manager Secrets
 - AWS CloudFormation Stacks
 - AWS Kinesis Streams
 - AWS DynamoDB Tables
