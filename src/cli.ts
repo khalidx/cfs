@@ -27,6 +27,7 @@ import Streams from './resources/streams'
 import Roles from './resources/roles'
 import Users from './resources/users'
 import Policies from './resources/policies'
+import Databases from './resources/databases'
 
 import { startServer } from './services/server'
 import { startPlugins } from './services/plugins'
@@ -64,7 +65,8 @@ export async function cli (args: string[]) {
       Streams.write(),
       Roles.write(),
       Users.write(),
-      Policies.write()
+      Policies.write(),
+      Databases.write()
     ].map(operation => operation.catch(addError)))
     const duration = Math.ceil((Date.now() - started) / 1000)
     console.debug(`The operation took ${duration} ${duration === 1 ? 'second' : 'seconds'}.`)

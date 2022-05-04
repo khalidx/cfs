@@ -158,6 +158,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS S3 Buckets
 - AWS CloudWatch Synthetics Canaries
 - AWS ACM Certificates
+- AWS RDS Database Clusters
 - AWS CloudFront Distributions
 - AWS Route53 Hosted Zones
 - AWS ELB Classic Load Balancers
