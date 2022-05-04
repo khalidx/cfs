@@ -9,8 +9,6 @@ import { addError } from '../services/errors'
 
 export class Parameters {
 
-  stringSchema = z.string().min(1).max(500)
-
   itemSchema = z.object({
     Type: z.union([
       z.literal('SecureString'),
