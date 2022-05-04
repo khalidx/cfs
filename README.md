@@ -165,6 +165,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS ELB Application, Gateway, and Network Load Balancers
 - AWS Lambda Functions
 - AWS EC2 Instances
+- AWS CloudWatch Logs Log Groups
 - AWS SSM Parameters
 - AWS CodePipeline Pipelines
 - AWS IAM Policies

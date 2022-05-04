@@ -29,6 +29,7 @@ import Users from './resources/users'
 import Policies from './resources/policies'
 import Databases from './resources/databases'
 import Secrets from './resources/secrets'
+import Logs from './resources/logs'
 
 import { startServer } from './services/server'
 import { startPlugins } from './services/plugins'
@@ -68,7 +69,8 @@ export async function cli (args: string[]) {
       Users.write(),
       Policies.write(),
       Databases.write(),
-      Secrets.write()
+      Secrets.write(),
+      Logs.write()
     ].map(operation => operation.catch(addError)))
     const duration = Math.ceil((Date.now() - started) / 1000)
     console.debug(`The operation took ${duration} ${duration === 1 ? 'second' : 'seconds'}.`)
