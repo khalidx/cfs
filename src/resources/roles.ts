@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { IAM, paginateListRoles } from '@aws-sdk/client-iam'
 import { ensureDir, remove, writeFile } from 'fs-extra'
-import { resolve } from 'path'
+import { join, resolve } from 'path'
 
 import { stringSchema } from '../services/schemas'
 
@@ -34,8 +34,8 @@ export class Roles {
       const roles = await this.collectionSchema.parseAsync(result.Roles)
       for (const role of roles) {
         const path = resolve('/', role.Path.split('/').map(i => encodeURIComponent(i)).join('/')).substring(1)
-        await ensureDir(`.cfs/roles/${path}`)
-        await writeFile(`.cfs/roles/${path}/${encodeURIComponent(role.RoleName)}`, JSON.stringify(role, null, 2))
+        await ensureDir(join('.cfs/roles/', path))
+        await writeFile(join('.cfs/roles/', path, encodeURIComponent(role.RoleName)), JSON.stringify(role, null, 2))
       }
     }
   }

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { SSM, paginateDescribeParameters } from '@aws-sdk/client-ssm'
 import { ensureDir, remove, writeFile } from 'fs-extra'
-import { resolve, dirname } from 'path'
+import { join, resolve, dirname } from 'path'
 
 import Regions from './regions'
 import { stringSchema } from '../services/schemas'
@@ -71,8 +71,8 @@ export class Parameters {
         }
         for (const parameter of parameters) {
           const name = resolve('/', parameter.Name.split('/').map(i => encodeURIComponent(i)).join('/')).substring(1)
-          await ensureDir(`.cfs/parameters/${encodeURIComponent(entry.region.RegionName)}/${dirname(name)}`)
-          await writeFile(`.cfs/parameters/${encodeURIComponent(entry.region.RegionName)}/${name}`, JSON.stringify(parameter, null, 2))
+          await ensureDir(join('.cfs/parameters/', encodeURIComponent(entry.region.RegionName), dirname(name)))
+          await writeFile(join('.cfs/parameters/', encodeURIComponent(entry.region.RegionName), name), JSON.stringify(parameter, null, 2))
         }
       }
     }).map(promise => promise.catch(addError)))
