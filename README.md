@@ -166,6 +166,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS EC2 Instances
 - AWS SSM Parameters
 - AWS CodePipeline Pipelines
+- AWS IAM Policies
 - AWS SQS Queues
 - AWS Regions
 - AWS IAM Roles
