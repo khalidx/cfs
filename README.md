@@ -168,6 +168,7 @@ The following cloud resources are [currently supported](./src/resources/):
 - AWS CodePipeline Pipelines
 - AWS SQS Queues
 - AWS Regions
+- AWS IAM Roles
 - AWS CloudFormation Stacks
 - AWS Kinesis Streams
 - AWS DynamoDB Tables
