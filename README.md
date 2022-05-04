@@ -240,4 +240,4 @@ After cloning, run `npm link` to make the `cfs` CLI available. You can now edit 
 
 ## support
 
-🚀 Over the **next week** (April 18-25 2022), all GitHub issues submitted will receive an 8-hour turnaround time, for a good beta testing experience!
+🚀 Over the **next 3 months** (April - July 2022), all GitHub issues submitted will receive an 8-hour turnaround time, for a good beta testing experience!
