@@ -80,6 +80,7 @@ export async function cli (args: string[]) {
       if (formatted.categories.NoInternetAccess) throw new CliUserError('The operation completed, but failed due to an issue with internet access. Please check your connection, proxy, or VPN settings.')
       if (formatted.categories.AuthenticationMissing) throw new CliUserError('The operation completed, but failed due to missing AWS credentials. Please login and retry.')
       if (formatted.categories.AuthenticationExpired) throw new CliUserError('The operation completed, but failed due to expired AWS credentials. Please login again and retry.')
+      if (formatted.categories.AuthenticationInvalid) throw new CliUserError('The operation completed, but failed due to invalid AWS credentials. Please login again and retry.')
       if (formatted.categories.InsufficientPermissions) throw new CliUserError('The operation completed, but failed due to insufficient permissions. Ignore this error, or login with a more privileged role and retry.')
       if (formatted.categories.SchemaValidationFailed) throw new CliUserError('The operation completed, but failed due to a schema validation issue. Please open a GitHub issue.')
       throw new CliUserError('The operation completed, but with some errors.')
