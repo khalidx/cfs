@@ -68,6 +68,7 @@ cfs
 cfs ls
 cfs find
 cfs browse
+cfs plugins
 cfs errors
 cfs clean
 cfs help
@@ -194,6 +195,12 @@ Do something after resources are discovered and saved, like:
 Plugins are defined in `.cfs/plugins/plugins.yaml`, and can be written in any language and can run any application. Check the [example plugins](.cfs/plugins/examples/) directory in this repository for ideas.
 
 Plugins run in the current directory by default, the same directory that contains the `.cfs/` subdirectory.
+
+Run all configured plugins with the following command:
+
+```sh
+cfs plugins
+```
 
 ### plugin resolution
 
