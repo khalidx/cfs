@@ -3,34 +3,9 @@ import { blue, yellow, red, italic, bold } from 'chalk'
 import { ensureDir, writeFile, readFile, remove } from 'fs-extra'
 import globby from 'globby'
 
-import { CliUserError, CliPluginError, addError, getFormattedErrors } from './services/errors'
-
+import { resources } from './index'
 import Regions from './resources/regions'
-import Vpcs from './resources/vpcs'
-import Buckets from './resources/buckets'
-import Tables from './resources/tables'
-import Domains from './resources/domains'
-import Certificates from './resources/certificates'
-import Functions from './resources/functions'
-import Queues from './resources/queues'
-import Topics from './resources/topics'
-import Distributions from './resources/distributions'
-import Apis from './resources/apis'
-import Stacks from './resources/stacks'
-import Alarms from './resources/alarms'
-import Canaries from './resources/canaries'
-import Instances from './resources/instances'
-import Parameters from './resources/parameters'
-import Elbs from './resources/elbs'
-import Pipelines from './resources/pipelines'
-import Streams from './resources/streams'
-import Roles from './resources/roles'
-import Users from './resources/users'
-import Policies from './resources/policies'
-import Databases from './resources/databases'
-import Secrets from './resources/secrets'
-import Logs from './resources/logs'
-
+import { CliUserError, CliPluginError, addError, getFormattedErrors } from './services/errors'
 import { startServer } from './services/server'
 import { startPlugins } from './services/plugins'
 
@@ -46,32 +21,7 @@ export async function cli (args: string[]) {
     const started = Date.now()
     console.debug('Downloading resource information ...')
     await Regions.write().catch(addError)
-    await Promise.all([
-      Vpcs.write(),
-      Buckets.write(),
-      Tables.write(),
-      Domains.write(),
-      Certificates.write(),
-      Functions.write(),
-      Queues.write(),
-      Topics.write(),
-      Distributions.write(),
-      Apis.write(),
-      Stacks.write(),
-      Alarms.write(),
-      Canaries.write(),
-      Instances.write(),
-      Parameters.write(),
-      Elbs.write(),
-      Pipelines.write(),
-      Streams.write(),
-      Roles.write(),
-      Users.write(),
-      Policies.write(),
-      Databases.write(),
-      Secrets.write(),
-      Logs.write()
-    ].map(operation => operation.catch(addError)))
+    await Promise.all(resources.map(resource => resource.write().catch(addError)))
     const duration = Math.ceil((Date.now() - started) / 1000)
     console.debug(`The operation took ${duration} ${duration === 1 ? 'second' : 'seconds'}.`)
     const formatted = getFormattedErrors()
