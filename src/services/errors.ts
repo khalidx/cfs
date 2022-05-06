@@ -22,14 +22,14 @@ type ErrorType = 'NoInternetAccess' | 'AuthenticationMissing' | 'AuthenticationE
 function getErrorType (error: any): ErrorType {
   const httpStatusCode = typeof error.$metadata === 'object' ? error.$metadata.httpStatusCode : undefined
   if (error.code === 'EAI_AGAIN' && error.syscall === 'getaddrinfo') return 'NoInternetAccess'
-  if (error.name = 'CredentialsProviderError' && error.message === 'Could not load credentials from any providers') return 'AuthenticationMissing'
+  if (error.name === 'CredentialsProviderError' && error.message === 'Could not load credentials from any providers') return 'AuthenticationMissing'
   if (error.Code === 'RequestExpired' || error.Code === 'ExpiredToken') return 'AuthenticationExpired'
   if (error.Code === 'AuthFailure' && error.message === 'AWS was not able to validate the provided access credentials' && httpStatusCode === 401) return 'AuthenticationInvalid'
   if (error.Code === 'InvalidAccessKeyId' && error.message === 'The AWS Access Key Id you provided does not exist in our records.' && httpStatusCode === 403) return 'AuthenticationInvalid'
   if (error.Code === 'InvalidClientTokenId' && error.message === 'The security token included in the request is invalid.' && httpStatusCode === 403) return 'AuthenticationInvalid'
   if (error.Code === 'AccessDenied' && httpStatusCode === 403) return 'InsufficientPermissions'
   if (error.Code === 'AuthorizationError' && httpStatusCode === 403) return 'InsufficientPermissions'
-  if (error.Code = 'UnauthorizedOperation' && httpStatusCode === 403) return 'InsufficientPermissions'
+  if (error.Code === 'UnauthorizedOperation' && httpStatusCode === 403) return 'InsufficientPermissions'
   if (error.__type === 'AccessDeniedException' && httpStatusCode === 400) return 'InsufficientPermissions'
   if (insufficientPermissionsGenericExpression.test(error.message) && (httpStatusCode === 400 || httpStatusCode === 403)) return 'InsufficientPermissions'
   if (error instanceof ZodError) return 'SchemaValidationFailed'
