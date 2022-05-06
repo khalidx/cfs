@@ -14,7 +14,7 @@ export async function cli (args: string[]) {
   const command = argv._.shift()
   if (command === undefined || command === 'sync') {
     await ensureDir('.cfs/')
-    await writeFile('.cfs/.gitignore', `/*\n!/plugins/\n`)
+    await writeFile('.cfs/.gitignore', '/*\n!/plugins/\n')
     await remove('.cfs/errors.log')
     const region = typeof argv['region'] === 'string' ? argv['region'] : undefined
     Regions.set(region)
